@@ -1,8 +1,12 @@
 import './styles/main.scss';
+import QuoteApp from "./js/App";
 
-var zmienna=[...[1, 2, 3]];
-console.log(zmienna);
+window.onload = function() {
+  "use strict";
 
-if (true) {
-  console.log('działa');
-}
+  const quoteNode = document.getElementById("quote");
+
+  const App = new QuoteApp(quoteNode);
+  App.showRandomQuote();
+  
+};

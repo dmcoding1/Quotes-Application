@@ -14,13 +14,13 @@ module.exports = {
             {
                 enforce: 'pre',
                 test: /\.m?js$/,
-                exclude: /(node_modules|bower_components)/,
+                exclude: /(node_modules|bower_components|server)/,
                 loader: 'eslint-loader',
                 options: require("./eslint.config.js").options
             },
             {
                 test: /\.m?js$/,
-                exclude: /(node_modules|bower_components)/,
+                exclude: /(node_modules|bower_components|server)/,
                 use: {
                     loader: 'babel-loader',
                     options: {

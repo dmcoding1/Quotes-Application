@@ -94,7 +94,19 @@
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _styles_main_scss__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./styles/main.scss */ \"./client/src/styles/main.scss\");\n/* harmony import */ var _styles_main_scss__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_styles_main_scss__WEBPACK_IMPORTED_MODULE_0__);\n\nvar zmienna = [1, 2, 3].concat();\nconsole.log(zmienna);\n\nif (true) {\n  console.log('działa');\n}\n\n//# sourceURL=webpack:///./client/src/index.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _styles_main_scss__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./styles/main.scss */ \"./client/src/styles/main.scss\");\n/* harmony import */ var _styles_main_scss__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_styles_main_scss__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var _js_App__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./js/App */ \"./client/src/js/App.js\");\n\n\n\nwindow.onload = function () {\n  \"use strict\";\n\n  var quoteNode = document.getElementById(\"quote\");\n  var App = new _js_App__WEBPACK_IMPORTED_MODULE_1__[\"default\"](quoteNode);\n  App.showRandomQuote();\n};\n\n//# sourceURL=webpack:///./client/src/index.js?");
+
+/***/ }),
+
+/***/ "./client/src/js/App.js":
+/*!******************************!*\
+  !*** ./client/src/js/App.js ***!
+  \******************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\nfunction _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError(\"Cannot call a class as a function\"); } }\n\nfunction _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if (\"value\" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }\n\nfunction _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }\n\nvar App =\n/*#__PURE__*/\nfunction () {\n  function App() {\n    var quoteNodeElem = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;\n\n    _classCallCheck(this, App);\n\n    if (!quoteNodeElem) {\n      throw new Error(\"HTML element not provided\");\n    }\n\n    this.quoteNode = quoteNodeElem;\n    this.API = {\n      getRandomQuote: function getRandomQuote() {\n        return fetch(\"http://localhost:3000/random\").then(function (res) {\n          return res.json();\n        });\n      }\n    };\n  }\n\n  _createClass(App, [{\n    key: \"showRandomQuote\",\n    value: function showRandomQuote() {\n      this.API.getRandomQuote().then(function (response) {\n        console.log(response);\n      })[\"catch\"](function (err) {\n        return console.error(err);\n      });\n    }\n  }]);\n\n  return App;\n}();\n\n/* harmony default export */ __webpack_exports__[\"default\"] = (App);\n\n//# sourceURL=webpack:///./client/src/js/App.js?");
 
 /***/ }),
 
@@ -116,7 +128,7 @@ eval("var api = __webpack_require__(/*! ../../../node_modules/style-loader/dist/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-eval("// Imports\nvar ___CSS_LOADER_API_IMPORT___ = __webpack_require__(/*! ../../../node_modules/css-loader/dist/runtime/api.js */ \"./node_modules/css-loader/dist/runtime/api.js\");\nexports = ___CSS_LOADER_API_IMPORT___(false);\n// Module\nexports.push([module.i, \"body {\\n  background-color: green; }\\n\", \"\"]);\n// Exports\nmodule.exports = exports;\n\n\n//# sourceURL=webpack:///./client/src/styles/main.scss?./node_modules/css-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js");
+eval("// Imports\nvar ___CSS_LOADER_API_IMPORT___ = __webpack_require__(/*! ../../../node_modules/css-loader/dist/runtime/api.js */ \"./node_modules/css-loader/dist/runtime/api.js\");\nexports = ___CSS_LOADER_API_IMPORT___(false);\n// Module\nexports.push([module.i, \"body {\\n  background-color: lightgrey; }\\n\", \"\"]);\n// Exports\nmodule.exports = exports;\n\n\n//# sourceURL=webpack:///./client/src/styles/main.scss?./node_modules/css-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js");
 
 /***/ }),
 
