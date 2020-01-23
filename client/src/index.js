@@ -5,8 +5,12 @@ window.onload = function() {
   "use strict";
 
   const quoteNode = document.getElementById("quote");
+  const loaderNode = document.getElementById("loader");
+  const randomQuote = document.getElementById("random");
 
-  const App = new QuoteApp(quoteNode);
+  const App = new QuoteApp({quoteNode, loaderNode});
   App.showRandomQuote();
+
+  randomQuote.addEventListener("click", () => App.showRandomQuote());
   
 };

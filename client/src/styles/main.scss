@@ -3,3 +3,36 @@ $bg-color: lightgrey;
 body {
   background-color: $bg-color;
 }
+
+#loader {
+  display: none;
+
+  &.show {
+    display: inline-block;
+  }
+
+  span {
+    position: relative;
+
+    &::after {
+      content: "";
+      display: block;
+      height: 1rem;
+      width: 100%;
+      background: $bg-color;
+      position: absolute;
+      top: 0;
+      right: 0;
+      animation: loader-animation 1s linear infinite alternate;
+    }
+  }
+}
+
+@keyframes loader-animation {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
