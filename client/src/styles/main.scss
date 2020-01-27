@@ -1,38 +1,102 @@
-$bg-color: lightgrey;
+$bg-color: #181D1E;
+
+* {
+  outline: 1px solid red;
+}
 
 body {
   background-color: $bg-color;
+  height: 100vh;
+  overflow: hidden;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 62.5%;
 }
 
-#loader {
-  display: none;
+.header {
+  max-width: 1140px;
+  margin: 0 auto;
+  height: 15%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 
-  &.show {
-    display: inline-block;
-  }
-
-  span {
-    position: relative;
-
-    &::after {
-      content: "";
-      display: block;
-      height: 1rem;
-      width: 100%;
-      background: $bg-color;
-      position: absolute;
-      top: 0;
-      right: 0;
-      animation: loader-animation 1s linear infinite alternate;
+  .logo {
+    svg {
+      margin: 1rem 0 0 -1rem;
     }
   }
 }
 
-@keyframes loader-animation {
-  0% {
-    transform: translateX(0%);
+.main {
+  height: 70%;
+  background-image: url("../images/banner.jpg");
+  background-position: center;
+  background-size: cover;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  font-size: 2.4rem;
+
+  .quote {
+    max-width: calc(1140px - 50px);
+    &__body {
+      padding: 2rem 0 3rem;
+      text-align: center;
+    }
+
+    &__author {
+      text-align: right;
+    }
   }
-  100% {
-    transform: translateX(100%);
+
+  .btn {
+    padding: 0.8rem 1.5rem;
+    display: block;
+    font-size: 1.2rem;
+    text-transform: uppercase;
+    font-family: inherit;
+    border: none;
+    color: #fff;
+    background: linear-gradient(180.29deg, #0E6477 13.22%, #1C0000 49.49%, #A93CDC 84.23%);
+    border-radius: 5px;
+    box-shadow: 3px 3px 3px #3f2b2b90,
+                -3px -3px 3px #ffffff90;
   }
 }
+
+
+
+
+// #loader {
+//   display: none;
+
+//   &.show {
+//     display: inline-block;
+//   }
+
+//   span {
+//     position: relative;
+
+//     &::after {
+//       content: "";
+//       display: block;
+//       height: 1rem;
+//       width: 100%;
+//       background: $bg-color;
+//       position: absolute;
+//       top: 0;
+//       right: 0;
+//       animation: loader-animation 1s linear infinite alternate;
+//     }
+//   }
+// }
+
+// @keyframes loader-animation {
+//   0% {
+//     transform: translateX(0%);
+//   }
+//   100% {
+//     transform: translateX(100%);
+//   }
+// }

@@ -40,8 +40,6 @@ class App {
       textToAnimate.push( i === randomMistakesCount - 1 || i === 0 ? prevText : this.swapWords(prevText) );
     }
 
-    console.log(textToAnimate);
-
     new Typed(`#${this.quoteNode.id}`, {
       strings: textToAnimate,
       typeSpeed: 10,
