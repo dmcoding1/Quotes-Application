@@ -9,7 +9,8 @@ class App {
 
     this.quoteNode = options.quoteNode;
     this.loaderNode = options.loaderNode;
-    console.log(options);
+    this.authorNode = options.authorNode;
+    this.typeCursor = options.typeCursor;
 
     this.API = {
       getRandomQuote: () => fetch("http://localhost:3000/random").then(res => res.json())
@@ -24,11 +25,13 @@ class App {
         this.hideLoder();
         // this.quoteNode.textContent = response.quote;
         this.animateText(response.quote);
-      }).catch(err => console.error(err));
+        this.authorNode.textContent = `~ ${response.author}`;
+      })
+      .catch(err => console.error(err));
   }
 
   animateText(text = "") {
-    const randomMistakesCount = Math.floor((Math.random() * (5 - 2)) + 2);
+    const randomMistakesCount = Math.floor((Math.random() * (5 - 3)) + 3);
     const splittedText = text.split('');
     const textLength = splittedText.length;
     const textToAnimate = [];
@@ -42,11 +45,15 @@ class App {
 
     new Typed(`#${this.quoteNode.id}`, {
       strings: textToAnimate,
-      typeSpeed: 10,
-      backSpeed: 5,
+      typeSpeed: 50,
+      backSpeed: 20,
       smartBackspace: true,
-      backDelay: 100
+      backDelay: 80,
+      onComplete: (self) => {
+        self.cursor.remove();
+      },
     });
+
   }
 
   showLoder() {
