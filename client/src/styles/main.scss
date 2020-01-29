@@ -16,6 +16,7 @@ body {
 }
 
 .header {
+  position: relative;
   max-width: 1140px;
   width: 90%;
   margin: 0 auto;
@@ -35,7 +36,6 @@ body {
   }
   
   .search {
-    position: relative;
     height: 100%;
     display: flex;
     justify-content: flex-end;
@@ -62,10 +62,6 @@ body {
       &:hover {
         transform: scale(1.2);
       }
-      
-      &:active + .search-results {
-        opacity: 1;
-      }
     }
     
     &__input, &__icon {
@@ -78,23 +74,38 @@ body {
   }
   
   .search-results {
+    display: none;
     position: absolute;
     top: 100%;
     right: 0;
-    width: 150%;
-    background-color: #ccc;
-    opacity: 0;
+    width: 50%;
+    border-top: 3px solid #a93cdc;
+    background-color: #ffedac;
+    z-index: 10;
+    max-height: 500%;
+    overflow: auto;
     transition: opacity .5s ease-in;
+
+    &.show {
+      display: block;
+    }
     
     &__header {
       margin: 1rem;
       font-size: 1.6rem;
       text-align: center;
     }
+
+    &__btn {
+      position: absolute;
+      top: 0;
+      right: 0;
+      cursor: pointer;
+    }
     
     &__list {
       margin: 1rem;
-      list-style: none;
+      list-style: circle inside;
       font-size: 1.4rem;
     }
     

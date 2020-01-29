@@ -10,10 +10,11 @@ class App {
     this.quoteNode = options.quoteNode;
     this.loaderNode = options.loaderNode;
     this.authorNode = options.authorNode;
-    this.typeCursor = options.typeCursor;
+    this.searchContainer = options.searchContainer;
 
     this.API = {
-      getRandomQuote: () => fetch("http://localhost:3000/random").then(res => res.json())
+      getRandomQuote: () => fetch("http://localhost:3000/random").then(res => res.json()),
+      getAuthorQuotes: (author) => fetch(`http://localhost:3000/quotes?author=${author}`).then(res => res.json())
     };
   }
 
@@ -45,7 +46,7 @@ class App {
 
     new Typed(`#${this.quoteNode.id}`, {
       strings: textToAnimate,
-      typeSpeed: 50,
+      typeSpeed: 1,
       backSpeed: 20,
       smartBackspace: true,
       backDelay: 80,
@@ -76,6 +77,27 @@ class App {
     wordsArray[lastIndex - 1] = tmpWord;
 
     return wordsArray.join(" ");
+  }
+
+  getAuthorQuotes(input, output) {
+    this.searchContainer.classList.remove("show");
+    const author = input.value;
+    if (author.length > 2) {
+      this.API.getAuthorQuotes(author).then(response => {
+        let outputHTML = "";
+        if (response.length) {
+          for (let quoteObj of response) {
+            console.log(quoteObj.quote);
+            outputHTML += `<li class="search-results__item">${quoteObj.quote}</li>`;
+          }
+        } else {
+          outputHTML = "We're sorry. No quotes by this author. Do you want to add one?";
+        }
+        this.searchContainer.classList.add("show");
+        output.innerHTML = outputHTML;
+      });
+    }
+    
   }
 
 }

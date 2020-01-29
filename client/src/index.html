@@ -148,6 +148,8 @@
           type="text"
           class="search__input"
           placeholder="Search author..."
+          required
+          min=1
         />
         <span
           class="search__icon"
@@ -166,12 +168,8 @@
         </span>
         <div class="search-results">
           <h4 class="search-results__header">Quotes by the author:</h4>
+          <button class="search-results__btn">X</button>
           <ul class="search-results__list">
-            <li class="search-results__item">Quote 1</li>
-            <li class="search-results__item">Quote 2</li>
-            <li class="search-results__item">Quote 3</li>
-            <li class="search-results__item">Quote 4</li>
-            <li class="search-results__item">Quote 5</li>
           </ul>
         </div>
       </div>
@@ -182,7 +180,7 @@
         <h2 class="quote__body">
           <span id="quote"></span>
         </h2>
-        <h3 id="author" class="quote__author">~ Albert Einstein</h3>
+        <h3 id="author" class="quote__author"></h3>
       </div>
       <button class="btn" id="random">
         <span class="btn__text">Change quote</span>
