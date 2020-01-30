@@ -11,12 +11,14 @@ class App {
     this.loaderNode = options.loaderNode;
     this.authorNode = options.authorNode;
     this.searchContainer = options.searchContainer;
+    this.lastSearchInput = false;
 
     this.API = {
       getRandomQuote: () => fetch("http://localhost:3000/random").then(res => res.json()),
       getAuthorQuotes: (author) => fetch(`http://localhost:3000/quotes?author=${author}`).then(res => res.json())
     };
   }
+
 
   showRandomQuote() {
     this.quoteNode.textContent = "";
@@ -80,24 +82,40 @@ class App {
   }
 
   getAuthorQuotes(input, output) {
-    this.searchContainer.classList.remove("show");
     const author = input.value;
-    if (author.length > 2) {
-      this.API.getAuthorQuotes(author).then(response => {
-        let outputHTML = "";
-        if (response.length) {
-          for (let quoteObj of response) {
-            console.log(quoteObj.quote);
-            outputHTML += `<li class="search-results__item">${quoteObj.quote}</li>`;
+
+    if (this.shouldSearchUpdate(author)) {
+      if (author.length > 2) {
+        this.API.getAuthorQuotes(author).then(response => {
+          let outputHTML = `<h4 class="search-results__header">Quotes by authors containing "${author}":</h4>`;
+          if (response.length) {
+            for (let quoteObj of response) {
+              outputHTML += `<li class="search-results__item">${quoteObj.quote} <br>~ ${quoteObj.author}</li>`;
+            }
+          } else {
+            outputHTML = `<h4 class="search-results__header">We're sorry. No quotes by this author.<br>Do you want to add one?</h4>`;
           }
-        } else {
-          outputHTML = "We're sorry. No quotes by this author. Do you want to add one?";
-        }
+          return outputHTML;
+        }).then(quoteList => {
+          output.innerHTML = quoteList;
+          this.searchContainer.classList.add("show");
+          this.searchContainer.classList.add("animate");
+          this.lastSearchInput = author;
+        });
+      } else {
+        output.innerHTML = `<h4 class="search-results__header">The author name should have at least 3 characters.</h4>`;
         this.searchContainer.classList.add("show");
-        output.innerHTML = outputHTML;
-      });
+        this.searchContainer.classList.add("animate");
+        this.lastSearchInput = author;
+      }
+    } else {
+      this.searchContainer.classList.add("show");
+      this.searchContainer.classList.add("animate");
     }
-    
+  }
+
+  shouldSearchUpdate(input) {
+    return input !== this.lastSearchInput;
   }
 
 }

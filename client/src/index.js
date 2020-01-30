@@ -10,8 +10,8 @@ window.onload = function() {
   const randomQuote = document.getElementById("random");
   const authorNode = document.getElementById("author");
   const searchContainer = document.querySelector(".search-results");
-  const searchBtn = document.querySelector(".search__icon");
-  const authorInput = document.querySelector(".search__input");
+  const searchForm = document.querySelector(".search__form");
+  const authorInput = document.querySelector(".search__form__input");
   const quotesList = document.querySelector(".search-results__list");
   const searchExitBtn = document.querySelector(".search-results__btn");
 
@@ -20,12 +20,11 @@ window.onload = function() {
 
   randomQuote.addEventListener("click", () => App.showRandomQuote());
 
-  searchBtn.addEventListener("click", () => App.getAuthorQuotes(authorInput, quotesList));
-
-  window.addEventListener("keyup", (e) => {
-    if (e.key === "Enter")
-      App.getAuthorQuotes(authorInput, quotesList);
+  searchForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    App.getAuthorQuotes(authorInput, quotesList);
   });
+
 
   searchExitBtn.addEventListener("click", () => searchContainer.classList.remove("show"));
   
