@@ -44,40 +44,38 @@ body {
       display: flex;
       justify-content: flex-end;
       align-items: center;
+    }
 
-      &__input {
-        height: 35%;
-        min-height: 30px;
-        padding-left: 0.5rem;
-        margin-right: 1rem;
-        font-family: "Montserrat", sans-serif;
-        font-size: 1.8rem;
-        border: none;
-        color: #000;
-        background-color: #ffedac;
-        border-bottom: 3px solid #a93cdc;
-        box-shadow: 2px 2px 2px #00000090, -2px -2px 2px #ffffff90;
+    &__input {
+      padding-left: 0.5rem;
+      margin-right: 1rem;
+      font-family: "Montserrat", sans-serif;
+      font-size: 1.8rem;
+      border: none;
+      color: #000;
+      background-color: #ffedac;
+      border-bottom: 3px solid #a93cdc;
+      box-shadow: 2px 2px 2px #00000090, -2px -2px 2px #ffffff90;
+    }
+
+    &__btn {
+      background-color: transparent;
+      border: none;
+      cursor: pointer;
+      transition: transform 0.3s ease-in;
+
+      &:hover {
+        transform: scale(1.3);
       }
+    }
 
-      &__btn {
-        height: 40%;
-        min-height: 30px;
-        background-color: transparent;
-        border: none;
-        cursor: pointer;
-        transition: transform 0.3s ease-in;
-
-        &:hover {
-          transform: scale(1.3);
-        }
-      }
-
-      &__input,
-      &__btn {
-        max-height: 80px;
-        svg {
-          height: 100%;
-        }
+    &__input,
+    &__btn {
+      height: 35%;
+      min-height: 30px;
+      max-height: 80px;
+      svg {
+        height: 100%;
       }
     }
   }
@@ -96,7 +94,8 @@ body {
     overflow-x: hidden;
 
     &.animate {
-      animation: search-results-slide-in 1s cubic-bezier(.87, .26, .01, 1.2) forwards;
+      animation: search-results-slide-in 1s cubic-bezier(0.87, 0.26, 0.01, 1.2)
+        forwards;
     }
 
     &.show {
@@ -120,8 +119,7 @@ body {
       border: none;
       font-size: 1.6rem;
       cursor: pointer;
-      transition: transform .2s ease-in;
-
+      transition: transform 0.2s ease-in;
 
       &:hover {
         transform: rotate(360deg);
@@ -143,6 +141,7 @@ body {
 .main {
   height: 70%;
   width: 100%;
+  background-color: #f7f4ed;
   background-image: url("../images/banner.jpg");
   background-position: center;
   background-size: cover;
@@ -163,54 +162,54 @@ body {
     &__author {
       text-align: right;
     }
-  }
 
-  .btn {
-    position: relative;
-    padding: 2rem 3rem;
-    display: block;
-    background: linear-gradient(
-      180.29deg,
-      #0e6477 13.22%,
-      #1c0000 49.49%,
-      #a93cdc 84.23%
-    );
-    border: none;
-    border-radius: 5px;
-    box-shadow: 3px 3px 3px #3f2b2b90, -3px -3px 3px #ffffff90;
-    cursor: pointer;
-
-    span {
+    &__btn {
       position: relative;
-      z-index: 1;
-      font-size: 2.4rem;
-      text-transform: uppercase;
-      font-family: inherit;
-      color: #fff;
-    }
-
-    &::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      width: 100%;
-      right: 100%;
-      border-radius: 5px;
+      padding: 2rem 3rem;
+      display: block;
       background: linear-gradient(
         180.29deg,
-        #a93cdc 13.22%,
+        #0e6477 13.22%,
         #1c0000 49.49%,
-        #0e6477 84.23%
+        #a93cdc 84.23%
       );
-      opacity: 0;
-      transition: opacity 0.3s ease-in;
-    }
+      border: none;
+      border-radius: 5px;
+      box-shadow: 3px 3px 3px #3f2b2b90, -3px -3px 3px #ffffff90;
+      cursor: pointer;
 
-    &:hover::before {
-      opacity: 1;
+      span {
+        position: relative;
+        z-index: 1;
+        font-size: 2.4rem;
+        text-transform: uppercase;
+        font-family: inherit;
+        color: #fff;
+      }
+
+      &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        width: 100%;
+        right: 100%;
+        border-radius: 5px;
+        background: linear-gradient(
+          180.29deg,
+          #a93cdc 13.22%,
+          #1c0000 49.49%,
+          #0e6477 84.23%
+        );
+        opacity: 0;
+        transition: opacity 0.3s ease-in;
+      }
+
+      &:hover::before {
+        opacity: 1;
+      }
     }
   }
 }
@@ -286,7 +285,6 @@ body {
 
   .header {
     height: 10%;
-    min-height: 80px;
     width: 90%;
     max-width: 1140px;
 
@@ -310,6 +308,7 @@ body {
   .quote {
     max-width: calc(100% - 50px);
   }
+
   .main {
     .quote {
       &__author {
@@ -318,6 +317,11 @@ body {
     }
   }
 
+  .footer {
+    height: 10%;
+    min-height: 10%;
+    max-width: 100%;
+  }
 }
 
 @media (max-width: 600px) {
@@ -329,18 +333,18 @@ body {
   .logo {
     max-height: 40px;
   }
+}
 
+@media (max-height: 600px) {
   .header {
     .search {
-      .search-results {
-        &__header, &__list {
-          font-size: 2rem;
-        }
+      &__input {
+        height: 20px;
+      }
+
+      &__btn {
+        max-height: 30px;
       }
     }
-  }
-
-  .main {
-    height: 80%;
   }
 }

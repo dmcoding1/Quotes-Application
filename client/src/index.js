@@ -11,7 +11,7 @@ window.onload = function() {
   const authorNode = document.getElementById("author");
   const searchContainer = document.querySelector(".search-results");
   const searchForm = document.querySelector(".search__form");
-  const authorInput = document.querySelector(".search__form__input");
+  const authorInput = document.querySelector(".search__input");
   const quotesList = document.querySelector(".search-results__list");
   const searchExitBtn = document.querySelector(".search-results__btn");
 
