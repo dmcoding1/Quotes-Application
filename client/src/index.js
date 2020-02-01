@@ -26,6 +26,6 @@ window.onload = function() {
   });
 
 
-  searchExitBtn.addEventListener("click", () => searchContainer.classList.remove("show"));
+  searchExitBtn.addEventListener("click", () => searchContainer.classList.remove("search-results--show"));
   
 };

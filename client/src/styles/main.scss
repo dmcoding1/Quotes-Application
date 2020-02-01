@@ -93,12 +93,12 @@ body {
     overflow: auto;
     overflow-x: hidden;
 
-    &.animate {
+    &--animate {
       animation: search-results-slide-in 1s cubic-bezier(0.87, 0.26, 0.01, 1.2)
         forwards;
     }
 
-    &.show {
+    &--show {
       display: block;
     }
 

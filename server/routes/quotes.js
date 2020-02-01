@@ -6,7 +6,7 @@ module.exports = app => {
     try {
       let { author, genre } = req.query;
       const quotes = await Quote.find({
-        author: {"$regex": ".*" + (author ? author : "") + ".*"},
+        author: {"$regex": ".*" + (author ? author : "") + ".*", "$options": "i"},
         genre: {"$regex": ".*" + (genre ? genre : "") + ".*"}
       });
       res.send(quotes);

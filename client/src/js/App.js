@@ -98,24 +98,37 @@ class App {
           return outputHTML;
         }).then(quoteList => {
           output.innerHTML = quoteList;
-          this.searchContainer.classList.add("show");
-          this.searchContainer.classList.add("animate");
+          this.showSearchResults(this.searchContainer);
+          this.animateSearchResults(this.searchContainer);
           this.lastSearchInput = author;
+        }).catch(err => {
+          output.innerHTML = `<h4 class="search-results__header">Failed to fetch author. <br>Try again later.</h4>`;
+          this.showSearchResults(this.searchContainer);
+          this.animateSearchResults(this.searchContainer);
+
         });
       } else {
         output.innerHTML = `<h4 class="search-results__header">The author name should have at least 3 characters.</h4>`;
-        this.searchContainer.classList.add("show");
-        this.searchContainer.classList.add("animate");
+        this.showSearchResults(this.searchContainer);
+        this.animateSearchResults(this.searchContainer);
         this.lastSearchInput = author;
       }
     } else {
-      this.searchContainer.classList.add("show");
-      this.searchContainer.classList.add("animate");
+      this.showSearchResults(this.searchContainer);
+      this.animateSearchResults(this.searchContainer);
     }
   }
 
   shouldSearchUpdate(input) {
     return input !== this.lastSearchInput;
+  }
+
+  showSearchResults(container) {
+    container.classList.add("search-results--show");
+  }
+
+  animateSearchResults(container) {
+    container.classList.add("search-results--animate");
   }
 
 }
