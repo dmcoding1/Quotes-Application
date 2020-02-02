@@ -6,7 +6,8 @@ window.onload = function() {
   "use strict";
 
   const quoteNode = document.getElementById("quote");
-  const loaderNode = document.getElementById("loader");
+  const quoteLoaderNode = document.querySelector(".quote__loader");
+  const searchLoaderNode = document.querySelector(".search__loader");
   const randomQuote = document.getElementById("random");
   const authorNode = document.getElementById("author");
   const searchContainer = document.querySelector(".search-results");
@@ -15,7 +16,7 @@ window.onload = function() {
   const quotesList = document.querySelector(".search-results__list");
   const searchExitBtn = document.querySelector(".search-results__btn");
 
-  const App = new QuoteApp({quoteNode, loaderNode, authorNode, searchContainer});
+  const App = new QuoteApp({quoteNode, quoteLoaderNode, authorNode, searchContainer, searchLoaderNode});
   App.showRandomQuote();
 
   randomQuote.addEventListener("click", () => App.showRandomQuote());
@@ -24,7 +25,6 @@ window.onload = function() {
     e.preventDefault();
     App.getAuthorQuotes(authorInput, quotesList);
   });
-
 
   searchExitBtn.addEventListener("click", () => searchContainer.classList.remove("search-results--show"));
   

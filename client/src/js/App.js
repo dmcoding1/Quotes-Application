@@ -8,9 +8,10 @@ class App {
     }
 
     this.quoteNode = options.quoteNode;
-    this.loaderNode = options.loaderNode;
+    this.loaderNode = options.quoteLoaderNode;
     this.authorNode = options.authorNode;
     this.searchContainer = options.searchContainer;
+    this.searchLoader = options.searchLoaderNode;
     this.lastSearchInput = false;
 
     this.API = {
@@ -21,8 +22,8 @@ class App {
 
 
   showRandomQuote() {
-    this.quoteNode.textContent = "";
-    this.showLoder();
+    this.quoteNode.textContent = ""; 
+    this.showLoder();       
     this.API.getRandomQuote()
       .then(response => {
         this.hideLoder();
@@ -61,13 +62,17 @@ class App {
 
   showLoder() {
     if (this.loaderNode) {
-      this.loaderNode.classList.add("show");
+      this.loaderNode.classList.add("quote__loader--show");
+    } else if (this.authorNode) {
+      this.authorNode.classList.add("quote__author--hide");
     }
   }
 
   hideLoder() {
     if (this.loaderNode) {
-      this.loaderNode.classList.remove("show");
+      this.loaderNode.classList.remove("quote__loader--show");
+    } else if (this.authorNode) {
+      this.authorNode.classList.remove("quote__author--hide");
     }
   }
 
@@ -83,44 +88,59 @@ class App {
 
   getAuthorQuotes(input, output) {
     const author = input.value;
-
+    this.showSearchLoader(this.searchLoader);
     if (this.shouldSearchUpdate(author)) {
       if (author.length > 2) {
-        this.API.getAuthorQuotes(author).then(response => {
-          let outputHTML = `<h4 class="search-results__header">Quotes by authors containing "${author}":</h4>`;
-          if (response.length) {
-            for (let quoteObj of response) {
-              outputHTML += `<li class="search-results__item">${quoteObj.quote} <br>~ ${quoteObj.author}</li>`;
-            }
-          } else {
-            outputHTML = `<h4 class="search-results__header">We're sorry. No quotes by this author.<br>Do you want to add one?</h4>`;
-          }
-          return outputHTML;
-        }).then(quoteList => {
-          output.innerHTML = quoteList;
-          this.showSearchResults(this.searchContainer);
-          this.animateSearchResults(this.searchContainer);
-          this.lastSearchInput = author;
-        }).catch(err => {
-          output.innerHTML = `<h4 class="search-results__header">Failed to fetch author. <br>Try again later.</h4>`;
-          this.showSearchResults(this.searchContainer);
-          this.animateSearchResults(this.searchContainer);
-
-        });
+        this.getQuotesFromDb(author, output);
       } else {
         output.innerHTML = `<h4 class="search-results__header">The author name should have at least 3 characters.</h4>`;
         this.showSearchResults(this.searchContainer);
         this.animateSearchResults(this.searchContainer);
+        this.hideSearchLoader(this.searchLoader);
         this.lastSearchInput = author;
       }
     } else {
       this.showSearchResults(this.searchContainer);
       this.animateSearchResults(this.searchContainer);
+      this.hideSearchLoader(this.searchLoader);
     }
+  }
+
+  getQuotesFromDb(input, output) {
+    this.API.getAuthorQuotes(input).then(response => {
+      let outputHTML = `<h4 class="search-results__header">Quotes by authors containing "${input}":</h4>`;
+      if (response.length) {
+        for (let quoteObj of response) {
+          outputHTML += `<li class="search-results__item">${quoteObj.quote} <br>~ ${quoteObj.author}</li>`;
+        }
+      } else {
+        outputHTML = `<h4 class="search-results__header">We're sorry. No quotes by this author.<br>Do you want to add one?</h4>`;
+      }
+      return outputHTML;
+    }).then(quoteList => {
+      output.innerHTML = quoteList;
+      this.showSearchResults(this.searchContainer);
+      this.animateSearchResults(this.searchContainer);
+      this.hideSearchLoader(this.searchLoader);
+      this.lastSearchInput = author;
+    }).catch(err => {
+      output.innerHTML = `<h4 class="search-results__header">Failed to fetch author. <br>Try again later.</h4>`;
+      this.showSearchResults(this.searchContainer);
+      this.animateSearchResults(this.searchContainer);
+      this.hideSearchLoader(this.searchLoader);
+    });
   }
 
   shouldSearchUpdate(input) {
     return input !== this.lastSearchInput;
+  }
+
+  showSearchLoader(loader) {
+    loader.classList.add("search__loader--show");
+  }
+
+  hideSearchLoader(loader) {
+    loader.classList.remove("search__loader--show");
   }
 
   showSearchResults(container) {

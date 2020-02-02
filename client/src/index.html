@@ -37,6 +37,9 @@
             role="button"
             aria-label="search"
           >
+            <div class="search__loader">
+              <div></div>
+            </div>
             <svg width="48" height="55" viewBox="0 0 48 55" fill="none">
               <use xlink:href="#search-icon"></use>
             </svg>
@@ -52,13 +55,17 @@
     </header>
     <main class="main">
       <div class="quote">
-        <span id="loader" class="qoute__loader">Loading<span>...</span></span>
+        <div class="quote__loader">
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
         <h2 class="quote__body">
           <span id="quote"></span>
         </h2>
         <h3 id="author" class="quote__author"></h3>
       </div>
-      <button class="quote__btn" id="random">
+      <button class="quote__btn" id="random" aria-label="Get random quote">
         <span>Change quote</span>
       </button>
     </main>

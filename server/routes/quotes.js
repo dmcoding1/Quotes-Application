@@ -15,15 +15,26 @@ module.exports = app => {
       console.error(error);
     }
   }),
-  app.get('/quote/:id', cors(), async (req, res, next) => {
-    try {
-      const quote = await Quote.find({_id: req.params.id});
-      res.send(quote);
-    } catch (error) {
+
+  app.post("/quotes/add", cors(), async (req, res, next) => {
+
+    const { quote, author, genre } = req.body;
+
+    const quoteObj = new Quote({
+      quote,
+      author,
+      genre
+    });
+
+    try {          
+      await quoteObj.save();
+      res.sendStatus(201);
+    } catch(err) {
       res.sendStatus(500);
-      console.error(error);
+      console.error(err);
     }
-  }),
+  });
+
   app.get('/random', cors(), async (req, res, next) => {
     try {
       const quotesCount = await Quote.estimatedDocumentCount();
