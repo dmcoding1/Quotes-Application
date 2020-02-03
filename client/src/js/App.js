@@ -1,7 +1,6 @@
 const Typed = require("typed.js");
 
 class App {
-  
   constructor(options = {}) {
     if (!options.quoteNode) {
       throw new Error("HTML element not provided");
@@ -12,22 +11,38 @@ class App {
     this.authorNode = options.authorNode;
     this.searchContainer = options.searchContainer;
     this.searchLoader = options.searchLoaderNode;
+    this.showAddFormBtn = options.showAddFormBtn;
     this.lastSearchInput = false;
 
     this.API = {
-      getRandomQuote: () => fetch("http://localhost:3000/random").then(res => res.json()),
-      getAuthorQuotes: (author) => fetch(`http://localhost:3000/quotes?author=${author}`).then(res => res.json())
+      getRandomQuote: () =>
+        fetch("http://localhost:3000/random").then(res => res.json()),
+      getAuthorQuotes: author =>
+        fetch(`http://localhost:3000/quotes?author=${author}`).then(res =>
+          res.json()
+        ),
+      postQuote: quoteObj => {
+        fetch("http://localhost:3000/quotes/add", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(quoteObj)
+        })
+          .then(response => response.text())
+          .then(res => console.log(res))
+          .catch(err => console.log(err));
+      }
     };
   }
 
-
   showRandomQuote() {
-    this.quoteNode.textContent = ""; 
-    this.showLoder();       
+    this.quoteNode.textContent = "";
+    this.authorNode.textContent = "";
+    this.showLoader();
     this.API.getRandomQuote()
       .then(response => {
-        this.hideLoder();
-        // this.quoteNode.textContent = response.quote;
+        this.hideLoader();
         this.animateText(response.quote);
         this.authorNode.textContent = `~ ${response.author}`;
       })
@@ -35,16 +50,20 @@ class App {
   }
 
   animateText(text = "") {
-    const randomMistakesCount = Math.floor((Math.random() * (5 - 3)) + 3);
-    const splittedText = text.split('');
+    const randomMistakesCount = Math.floor(Math.random() * (5 - 3) + 3);
+    const splittedText = text.split("");
     const textLength = splittedText.length;
     const textToAnimate = [];
     let prevText = "";
 
     for (let i = 0; i < randomMistakesCount; i++) {
       const range = textLength / randomMistakesCount;
-      prevText += splittedText.slice( (i * range), (i * range) + range).join('');
-      textToAnimate.push( i === randomMistakesCount - 1 || i === 0 ? prevText : this.swapWords(prevText) );
+      prevText += splittedText.slice(i * range, i * range + range).join("");
+      textToAnimate.push(
+        i === randomMistakesCount - 1 || i === 0
+          ? prevText
+          : this.swapWords(prevText)
+      );
     }
 
     new Typed(`#${this.quoteNode.id}`, {
@@ -53,14 +72,13 @@ class App {
       backSpeed: 20,
       smartBackspace: true,
       backDelay: 80,
-      onComplete: (self) => {
+      onComplete: self => {
         self.cursor.remove();
-      },
+      }
     });
-
   }
 
-  showLoder() {
+  showLoader() {
     if (this.loaderNode) {
       this.loaderNode.classList.add("quote__loader--show");
     } else if (this.authorNode) {
@@ -68,7 +86,7 @@ class App {
     }
   }
 
-  hideLoder() {
+  hideLoader() {
     if (this.loaderNode) {
       this.loaderNode.classList.remove("quote__loader--show");
     } else if (this.authorNode) {
@@ -87,7 +105,7 @@ class App {
   }
 
   getAuthorQuotes(input, output) {
-    const author = input.value;
+    const author = input.value.trim().replace(/\?|\*|\#|\$/g, '');
     this.showSearchLoader(this.searchLoader);
     if (this.shouldSearchUpdate(author)) {
       if (author.length > 2) {
@@ -107,28 +125,35 @@ class App {
   }
 
   getQuotesFromDb(input, output) {
-    this.API.getAuthorQuotes(input).then(response => {
-      let outputHTML = `<h4 class="search-results__header">Quotes by authors containing "${input}":</h4>`;
-      if (response.length) {
-        for (let quoteObj of response) {
-          outputHTML += `<li class="search-results__item">${quoteObj.quote} <br>~ ${quoteObj.author}</li>`;
+    this.API.getAuthorQuotes(input)
+      .then(response => {
+        let outputHTML = `<h4 class="search-results__header">Quotes by authors containing "${input}":</h4>`;
+        if (response.length) {
+          for (let quoteObj of response) {
+            outputHTML += `<li class="search-results__item">${quoteObj.quote} <br>~ ${quoteObj.author}</li>`;
+          }
+        } else {
+          outputHTML = `
+            <h4 class="search-results__header">
+              We're sorry. No quotes by this author.<br>Do you want to add one?
+            </h4>`;
+          this.showAddFormBtn.classList.add("search-results__add-btn--show");
         }
-      } else {
-        outputHTML = `<h4 class="search-results__header">We're sorry. No quotes by this author.<br>Do you want to add one?</h4>`;
-      }
-      return outputHTML;
-    }).then(quoteList => {
-      output.innerHTML = quoteList;
-      this.showSearchResults(this.searchContainer);
-      this.animateSearchResults(this.searchContainer);
-      this.hideSearchLoader(this.searchLoader);
-      this.lastSearchInput = author;
-    }).catch(err => {
-      output.innerHTML = `<h4 class="search-results__header">Failed to fetch author. <br>Try again later.</h4>`;
-      this.showSearchResults(this.searchContainer);
-      this.animateSearchResults(this.searchContainer);
-      this.hideSearchLoader(this.searchLoader);
-    });
+        return outputHTML;
+      })
+      .then(quoteList => {
+        output.innerHTML = quoteList;
+        this.showSearchResults(this.searchContainer);
+        this.animateSearchResults(this.searchContainer);
+        this.hideSearchLoader(this.searchLoader);
+        this.lastSearchInput = author;
+      })
+      .catch(err => {
+        output.innerHTML = `<h4 class="search-results__header">Failed to fetch author. <br>Try again later.</h4>`;
+        this.showSearchResults(this.searchContainer);
+        this.animateSearchResults(this.searchContainer);
+        this.hideSearchLoader(this.searchLoader);
+      });
   }
 
   shouldSearchUpdate(input) {
@@ -151,6 +176,14 @@ class App {
     container.classList.add("search-results--animate");
   }
 
+  showAddForm(form) {
+    form.classList.add("add-quote--show");
+    form.classList.add("add-quote--animate");
+  }
+
+  hideAddForm(form) {
+    form.classList.remove("add-quote--show");
+  }
 }
 
 export default App;

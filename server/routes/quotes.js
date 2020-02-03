@@ -2,6 +2,8 @@ const Quote = require('../models/Quote');
 var cors = require('cors');
 
 module.exports = app => {
+  app.use(cors());
+  
   app.get('/quotes', cors(), async (req, res, next) => {
     try {
       let { author, genre } = req.query;
@@ -16,7 +18,7 @@ module.exports = app => {
     }
   }),
 
-  app.post("/quotes/add", cors(), async (req, res, next) => {
+  app.post("/quotes/add", async (req, res, next) => {
 
     const { quote, author, genre } = req.body;
 
@@ -29,6 +31,7 @@ module.exports = app => {
     try {          
       await quoteObj.save();
       res.sendStatus(201);
+      res.send(quoteObj);
     } catch(err) {
       res.sendStatus(500);
       console.error(err);

@@ -11,6 +11,11 @@
     />
   </head>
   <body>
+    <div id="page-loader" class="page-loader" aria-hidden>
+      <div class="page-loader__loader"></div>
+      <div class="page-loader__cover page-loader__cover--top"></div>
+      <div class="page-loader__cover page-loader__cover--bottom"></div>
+    </div>
     <header class="header">
       <div class="logo">
         <svg
@@ -50,7 +55,34 @@
             X
           </button>
           <ul class="search-results__list"></ul>
+          <button class="search-results__add-btn">Add quote</btn>
         </div>
+        <form class="add-quote">
+          <button class="add-quote__btn-exit" aria-label="Exit add form">
+            X
+          </button>
+          <label for="quote-author">Author:</label>
+          <input
+            id="quote-author"
+            type="text"
+            class="add-quote__author"
+            placeholder="Author's name..."
+            aria-label="Author name"
+            required
+          />
+          <label for="quote-body">Quote:</label>
+          <textarea
+            id="quote-body"
+            cols="10"
+            rows="3"
+            maxlength="200"
+            class="add-quote__quote"
+            placeholder="Author's quote..."
+            aria-label="Quote"
+            required
+          ></textarea>
+          <button class="add-quote__btn" type="submit" aria-label="Submit quote">Submit</button>
+        </form>
       </div>
     </header>
     <main class="main">
