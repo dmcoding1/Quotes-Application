@@ -43,47 +43,49 @@
             aria-label="search"
           >
             <div class="search__loader">
-              <div></div>
             </div>
             <svg width="48" height="55" viewBox="0 0 48 55" fill="none">
               <use xlink:href="#search-icon"></use>
             </svg>
           </button>
         </form>
-        <div class="search-results">
-          <button class="search-results__btn" aria-label="Hide search results">
-            X
-          </button>
-          <ul class="search-results__list"></ul>
-          <button class="search-results__add-btn">Add quote</btn>
-        </div>
-        <form class="add-quote">
-          <button class="add-quote__btn-exit" aria-label="Exit add form">
-            X
-          </button>
-          <label for="quote-author">Author:</label>
-          <input
-            id="quote-author"
-            type="text"
-            class="add-quote__author"
-            placeholder="Author's name..."
-            aria-label="Author name"
-            required
-          />
-          <label for="quote-body">Quote:</label>
-          <textarea
-            id="quote-body"
-            cols="10"
-            rows="3"
-            maxlength="200"
-            class="add-quote__quote"
-            placeholder="Author's quote..."
-            aria-label="Quote"
-            required
-          ></textarea>
-          <button class="add-quote__btn" type="submit" aria-label="Submit quote">Submit</button>
-        </form>
       </div>
+      <div class="search-results">
+        <button class="search-results__btn" aria-label="Hide search results">
+          X
+        </button>
+        <ul class="search-results__list"></ul>
+        <button class="search-results__add-btn">Add quote</btn>
+      </div>
+      <form class="add-quote">
+        <button class="add-quote__btn-exit" aria-label="Exit add form">
+          X
+        </button>
+        <label for="quote-author">Author:</label>
+        <input
+          id="quote-author"
+          type="text"
+          class="add-quote__author"
+          placeholder="Author's name..."
+          aria-label="Author name"
+          required
+        />
+        <label for="quote-body">Quote:</label>
+        <textarea
+          id="quote-body"
+          cols="10"
+          rows="3"
+          maxlength="200"
+          class="add-quote__quote"
+          placeholder="Author's quote..."
+          aria-label="Quote"
+          required
+        ></textarea>
+        <button class="add-quote__btn" type="submit" aria-label="Submit quote">
+          <span>Submit</span>
+          <div class="add-quote__loader"></div>
+        </button>
+      </form>
     </header>
     <main class="main">
       <div class="quote">

@@ -7,7 +7,6 @@ window.onload = function() {
   "use strict";
   const pageLoader = document.getElementById("page-loader");
   pageLoader.classList.add("loaded");
-  console.log("Loaded");
   setTimeout(() => (pageLoader.style.display = "none"), 1000);
 
   const quoteNode = document.getElementById("quote");
@@ -57,21 +56,46 @@ window.onload = function() {
   });
 
   showAddFormBtn.addEventListener("click", () => {
-    console.log("działa");
     searchContainer.classList.remove("search-results--show");
     App.showAddForm(addForm);
   });
 
   addForm.addEventListener("submit", e => {
     e.preventDefault();
+    addQuoteBtn.classList.add("add-quote__btn--loading");
     const quote = {
       "quote": quoteBodyInput.value,
       "author": quoteAuthorInput.value,
       "genre": "age"
     };
     App.API.postQuote(quote);
+    addQuoteBtn.classList.remove("add-quote__btn--loading");
     App.hideAddForm(addForm);
     quoteBodyInput.value = "";
     quoteAuthorInput.value = "";
+  });
+
+  quoteBodyInput.addEventListener("keypress", e => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      const quote = {
+        "quote": quoteBodyInput.value,
+        "author": quoteAuthorInput.value,
+        "genre": "age"
+      };
+      App.API.postQuote(quote);
+      App.hideAddForm(addForm);
+      quoteBodyInput.value = "";
+      quoteAuthorInput.value = "";
+    }    
+  });
+
+  quotesList.addEventListener("click", e => {
+    if (e.target.tagName === "LI") {
+      searchContainer.classList.remove("search-results--show");
+      quoteNode.textContent = "";
+      App.animateText(e.target.childNodes[0].wholeText);
+      authorNode.textContent = e.target.childNodes[2].wholeText;
+    }    
   });
 };

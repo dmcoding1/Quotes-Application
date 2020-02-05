@@ -13,6 +13,7 @@ class App {
     this.searchLoader = options.searchLoaderNode;
     this.showAddFormBtn = options.showAddFormBtn;
     this.lastSearchInput = false;
+    this.isTyping = false;
 
     this.API = {
       getRandomQuote: () =>
@@ -29,7 +30,7 @@ class App {
           },
           body: JSON.stringify(quoteObj)
         })
-          .then(response => response.text())
+          .then(res => res.text())
           .then(res => console.log(res))
           .catch(err => console.log(err));
       }
@@ -37,6 +38,8 @@ class App {
   }
 
   showRandomQuote() {
+    if (this.isTyping) return;
+    this.isTyping = true;
     this.quoteNode.textContent = "";
     this.authorNode.textContent = "";
     this.showLoader();
@@ -74,6 +77,7 @@ class App {
       backDelay: 80,
       onComplete: self => {
         self.cursor.remove();
+        this.isTyping = false;
       }
     });
   }
@@ -105,7 +109,7 @@ class App {
   }
 
   getAuthorQuotes(input, output) {
-    const author = input.value.trim().replace(/\?|\*|\#|\$/g, '');
+    const author = input.value.trim().replace(/[^\w\s]/gi, '');
     this.showSearchLoader(this.searchLoader);
     if (this.shouldSearchUpdate(author)) {
       if (author.length > 2) {
@@ -130,7 +134,8 @@ class App {
         let outputHTML = `<h4 class="search-results__header">Quotes by authors containing "${input}":</h4>`;
         if (response.length) {
           for (let quoteObj of response) {
-            outputHTML += `<li class="search-results__item">${quoteObj.quote} <br>~ ${quoteObj.author}</li>`;
+            outputHTML += `<li class="search-results__item" title="Show on the big screen">${quoteObj.quote} <br>~ ${quoteObj.author}</li>`;
+            this.showAddFormBtn.classList.add("search-results__add-btn--show");
           }
         } else {
           outputHTML = `
