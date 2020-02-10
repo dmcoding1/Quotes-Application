@@ -1,0 +1,29 @@
+@keyframes quote-loader-animation {
+  to {
+    transform: translateX(-50%) scale(0);
+  }
+}
+
+@keyframes add-loader-animation {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes search-loader-animation {
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+@keyframes slide-in {
+  0% {
+    transform: translateX(500%);
+  }
+  100% {
+    transform: translateX(0%);
+  }
+}

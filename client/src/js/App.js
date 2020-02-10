@@ -22,6 +22,7 @@ class App {
         fetch(`http://localhost:3000/quotes?author=${author}`).then(res =>
           res.json()
         ),
+      getQuote: quote => fetch(`http://localhost:3000/quotes?quote=${quote}`).then(res => res.json()),
       postQuote: quoteObj => {
         fetch("http://localhost:3000/quotes/add", {
           method: "POST",
@@ -39,21 +40,28 @@ class App {
 
   showRandomQuote() {
     if (this.isTyping) return;
+
     this.isTyping = true;
     this.quoteNode.textContent = "";
     this.authorNode.textContent = "";
-    this.showLoader();
+    this.showElement(this.loaderNode, "quote__loader--show");
+
     this.API.getRandomQuote()
       .then(response => {
-        this.hideLoader();
+        this.hideElement(this.loaderNode, "quote__loader--show");
         this.animateText(response.quote);
         this.authorNode.textContent = `~ ${response.author}`;
       })
-      .catch(err => console.error(err));
+      .catch(err => {
+        this.hideElement(this.loaderNode, "quote__loader--show");
+        this.quoteNode.textContent = "Cannot connect to the server. Check your internet connection and try again.";
+        console.error(err);
+        this.isTyping = false;
+      });
   }
 
   animateText(text = "") {
-    const randomMistakesCount = Math.floor(Math.random() * (5 - 3) + 3);
+    const randomMistakesCount = Math.floor(Math.random() * (4 - 3) + 3);
     const splittedText = text.split("");
     const textLength = splittedText.length;
     const textToAnimate = [];
@@ -70,9 +78,9 @@ class App {
     }
 
     new Typed(`#${this.quoteNode.id}`, {
-      strings: textToAnimate,
-      typeSpeed: 1,
-      backSpeed: 20,
+      strings: text.length > 70 ? [text] : textToAnimate,
+      typeSpeed: text.length < 70 ? 50 : 1,
+      backSpeed: 30,
       smartBackspace: true,
       backDelay: 80,
       onComplete: self => {
@@ -80,22 +88,6 @@ class App {
         this.isTyping = false;
       }
     });
-  }
-
-  showLoader() {
-    if (this.loaderNode) {
-      this.loaderNode.classList.add("quote__loader--show");
-    } else if (this.authorNode) {
-      this.authorNode.classList.add("quote__author--hide");
-    }
-  }
-
-  hideLoader() {
-    if (this.loaderNode) {
-      this.loaderNode.classList.remove("quote__loader--show");
-    } else if (this.authorNode) {
-      this.authorNode.classList.remove("quote__author--hide");
-    }
   }
 
   swapWords(text) {
@@ -110,21 +102,23 @@ class App {
 
   getAuthorQuotes(input, output) {
     const author = input.value.trim().replace(/[^\w\s]/gi, '');
-    this.showSearchLoader(this.searchLoader);
+
+    this.showElement(this.searchLoader, "search__loader--show");
+
     if (this.shouldSearchUpdate(author)) {
       if (author.length > 2) {
         this.getQuotesFromDb(author, output);
       } else {
         output.innerHTML = `<h4 class="search-results__header">The author name should have at least 3 characters.</h4>`;
-        this.showSearchResults(this.searchContainer);
-        this.animateSearchResults(this.searchContainer);
-        this.hideSearchLoader(this.searchLoader);
+        this.showElement(this.searchContainer, "search-results--show");
+        this.animateElement(this.searchContainer, "search-results--animate");
+        this.hideElement(this.searchLoader, "search__loader--show");
         this.lastSearchInput = author;
       }
     } else {
-      this.showSearchResults(this.searchContainer);
-      this.animateSearchResults(this.searchContainer);
-      this.hideSearchLoader(this.searchLoader);
+      this.showElement(this.searchContainer, "search-results--show");
+      this.animateElement(this.searchContainer, "search-results--animate");
+      this.hideElement(this.searchLoader, "search__loader--show");
     }
   }
 
@@ -134,30 +128,31 @@ class App {
         let outputHTML = `<h4 class="search-results__header">Quotes by authors containing "${input}":</h4>`;
         if (response.length) {
           for (let quoteObj of response) {
-            outputHTML += `<li class="search-results__item" title="Show on the big screen">${quoteObj.quote} <br>~ ${quoteObj.author}</li>`;
-            this.showAddFormBtn.classList.add("search-results__add-btn--show");
+            outputHTML += `<li class="search-results__item" title="Show on the big screen" role="button" tabindex="0" aria-label="show quote">${quoteObj.quote} <br>~ ${quoteObj.author}</li>`;
+            this.showElement(this.showAddFormBtn, "search-results__add-btn--show");
           }
         } else {
           outputHTML = `
             <h4 class="search-results__header">
               We're sorry. No quotes by this author.<br>Do you want to add one?
             </h4>`;
-          this.showAddFormBtn.classList.add("search-results__add-btn--show");
+          this.showElement(this.showAddFormBtn, "search-results__add-btn--show");
         }
         return outputHTML;
       })
       .then(quoteList => {
         output.innerHTML = quoteList;
-        this.showSearchResults(this.searchContainer);
-        this.animateSearchResults(this.searchContainer);
-        this.hideSearchLoader(this.searchLoader);
+        this.showElement(this.searchContainer, "search-results--show");
+        this.animateElement(this.searchContainer, "search-results--animate");
+        this.hideElement(this.searchLoader, "search__loader--show");
         this.lastSearchInput = author;
       })
       .catch(err => {
         output.innerHTML = `<h4 class="search-results__header">Failed to fetch author. <br>Try again later.</h4>`;
-        this.showSearchResults(this.searchContainer);
-        this.animateSearchResults(this.searchContainer);
-        this.hideSearchLoader(this.searchLoader);
+        this.showElement(this.searchContainer, "search-results--show");
+        this.animateElement(this.searchContainer, "search-results--animate");
+        this.hideElement(this.searchLoader, "search__loader--show");
+        console.log(err);
       });
   }
 
@@ -165,30 +160,18 @@ class App {
     return input !== this.lastSearchInput;
   }
 
-  showSearchLoader(loader) {
-    loader.classList.add("search__loader--show");
+  showElement(element, className) {
+    element.classList.add(className);
   }
 
-  hideSearchLoader(loader) {
-    loader.classList.remove("search__loader--show");
+  hideElement(element, className) {
+    element.classList.remove(className);
   }
 
-  showSearchResults(container) {
-    container.classList.add("search-results--show");
+  animateElement(element, className) {
+    element.classList.add(className);
   }
 
-  animateSearchResults(container) {
-    container.classList.add("search-results--animate");
-  }
-
-  showAddForm(form) {
-    form.classList.add("add-quote--show");
-    form.classList.add("add-quote--animate");
-  }
-
-  hideAddForm(form) {
-    form.classList.remove("add-quote--show");
-  }
 }
 
 export default App;

@@ -6,11 +6,18 @@ module.exports = app => {
   
   app.get('/quotes', cors(), async (req, res, next) => {
     try {
-      let { author, genre } = req.query;
+      let { author, quote } = req.query;
+      const names = author ? author.split(" ") : "";
+      let firstName = names[0] || "";
+      let lastName = names[1] || "";
+
+      if (quote) quote = quote.replace(/\s+/g, ' ');
+
       const quotes = await Quote.find({
-        author: {"$regex": ".*" + (author ? author : "") + ".*", "$options": "i"},
-        genre: {"$regex": ".*" + (genre ? genre : "") + ".*"}
+        author: {"$regex": ".*" + firstName + " *" + lastName + ".*", "$options": "i"},
+        quote: {"$regex": ".*" + (quote ? quote : "") + ".*", "$options": "i"}
       });
+      
       res.send(quotes);
     } catch (error) {
       res.sendStatus(500);
