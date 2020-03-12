@@ -1,4 +1,5 @@
 const Typed = require("typed.js");
+const config = require("../config");
 
 class App {
   constructor(options = {}) {
@@ -17,14 +18,14 @@ class App {
 
     this.API = {
       getRandomQuote: () =>
-        fetch("http://localhost:3000/random").then(res => res.json()),
+        fetch(`http://${config.hostname}:3000/random`).then(res => res.json()),
       getAuthorQuotes: author =>
-        fetch(`http://localhost:3000/quotes?author=${author}`).then(res =>
+        fetch(`http://${config.hostname}:3000/quotes?author=${author}`).then(res =>
           res.json()
         ),
-      getQuote: quote => fetch(`http://localhost:3000/quotes?quote=${quote}`).then(res => res.json()),
+      getQuote: quote => fetch(`http://${config.hostname}:3000/quotes?quote=${quote}`).then(res => res.json()),
       postQuote: quoteObj => {
-        fetch("http://localhost:3000/quotes/add", {
+        fetch(`http://${config.hostname}:3000/quotes/add`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json"
