@@ -1,3 +1,3 @@
-module.export = {
+module.exports = {
   hostname: process.env.HOSTNAME || "localhost"
-}
+};

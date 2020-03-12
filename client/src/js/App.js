@@ -1,5 +1,5 @@
 const Typed = require("typed.js");
-const config = require("../config");
+const config = require("../config.js");
 
 class App {
   constructor(options = {}) {
