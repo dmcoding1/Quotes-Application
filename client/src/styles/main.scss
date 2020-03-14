@@ -464,7 +464,7 @@ body {
       transition: opacity 0.3s ease-out;
     }
 
-    &:hover::before {
+    &:hover::before, &:focus::before {
       opacity: 1;
     }
   }
