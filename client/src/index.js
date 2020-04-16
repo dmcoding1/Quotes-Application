@@ -177,6 +177,5 @@ window.onload = function() {
         quoteAuthorInput.value = "";
       }
     });
-     
   }
 };

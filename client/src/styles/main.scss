@@ -2,10 +2,6 @@ $bg-color: #181d1e;
 $primary-color: #ffedac;
 $secondary-color: #a93cdc;
 
-* {
-  //outline: 1px solid red;
-}
-
 html {
   font-family: "Montserrat", sans-serif;
   font-size: 62.5%;
@@ -328,8 +324,7 @@ body {
       width: 3rem;
       top: 0;
       left: 120%;
-      cursor: auto;
-      
+      cursor: auto;      
       border-top: 3px solid $primary-color;
       border-right: 3px solid transparent;
       border-radius: 50%;

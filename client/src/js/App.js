@@ -153,7 +153,7 @@ class App {
         this.showElement(this.searchContainer, "search-results--show");
         this.animateElement(this.searchContainer, "search-results--animate");
         this.hideElement(this.searchLoader, "search__loader--show");
-        console.log(err);
+        console.error(err);
       });
   }
 

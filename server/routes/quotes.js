@@ -1,5 +1,5 @@
 const Quote = require('../models/Quote');
-var cors = require('cors');
+const cors = require('cors');
 
 module.exports = app => {
   app.use(cors());
