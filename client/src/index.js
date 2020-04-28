@@ -4,9 +4,10 @@ import "./styles/main.scss";
 import "./styles/animations.scss";
 import "./styles/viewports.scss";
 import QuoteApp from "./js/App";
-import './favicon.ico';
+import handleAutocomplete from "./js/autocomplete";
+import "./favicon.ico";
 
-window.onload = function() {
+window.onload = function () {
   "use strict";
   const pageLoader = document.getElementById("page-loader");
   pageLoader.classList.add("loaded");
@@ -29,6 +30,7 @@ window.onload = function() {
   const quoteAuthorInput = document.getElementById("quote-author");
   const quoteBodyInput = document.getElementById("quote-body");
   const addQuoteBtn = document.querySelector(".add-quote__btn");
+  const autocompleteList = searchForm.querySelector(".autocomplete__items");
 
   const App = new QuoteApp({
     quoteNode,
@@ -36,17 +38,22 @@ window.onload = function() {
     authorNode,
     searchContainer,
     searchLoaderNode,
-    showAddFormBtn
+    showAddFormBtn,
   });
 
   App.showRandomQuote();
 
   randomQuote.addEventListener("click", () => App.showRandomQuote());
 
-  searchForm.addEventListener("submit", e => {
+  searchForm.addEventListener("submit", (e) => {
     e.preventDefault();
     App.hideElement(addForm, "add-quote--show");
     App.getAuthorQuotes(authorInput, quotesList);
+  });
+
+  authorInput.addEventListener("keyup", (e) => {
+    const value = e.target.value;
+    handleAutocomplete(e, value, autocompleteList, App);
   });
 
   searchExitBtn.addEventListener("click", () => {
@@ -54,7 +61,7 @@ window.onload = function() {
     App.hideElement(showAddFormBtn, "search-results__add-btn--show");
   });
 
-  addFormExitBtn.addEventListener("click", e => {
+  addFormExitBtn.addEventListener("click", (e) => {
     App.hideElement(addForm, "add-quote--show");
   });
 
@@ -67,23 +74,23 @@ window.onload = function() {
     App.animateElement(addForm, "add-quote--animate");
   });
 
-  addForm.addEventListener("submit", e => {
+  addForm.addEventListener("submit", (e) => {
     postQuote(e);
   });
 
-  quoteBodyInput.addEventListener("keypress", e => {
+  quoteBodyInput.addEventListener("keypress", (e) => {
     if (e.key === "Enter" && !e.shiftKey) {
       postQuote(e);
     }
   });
 
-  quoteAuthorInput.addEventListener("keypress", e => {
+  quoteAuthorInput.addEventListener("keypress", (e) => {
     if (e.key === "Enter" && !e.shiftKey) {
       postQuote(e);
     }
   });
 
-  addForm.addEventListener("keyup", e => {
+  addForm.addEventListener("keyup", (e) => {
     e.preventDefault();
     if (e.key === "Escape") {
       App.hideElement(addForm, "add-quote--show");
@@ -92,25 +99,25 @@ window.onload = function() {
     }
   });
 
-  quotesList.addEventListener("click", e => {
+  quotesList.addEventListener("click", (e) => {
     if (e.target.tagName === "LI") {
       quoteNode.textContent = "";
-      App.hideElement(searchContainer, "search-results--show");      
+      App.hideElement(searchContainer, "search-results--show");
       App.animateText(e.target.childNodes[0].wholeText);
       authorNode.textContent = e.target.childNodes[2].wholeText;
     }
   });
 
-  quotesList.addEventListener("keypress", e => {
+  quotesList.addEventListener("keypress", (e) => {
     if (e.key === "Enter" && e.target.tagName === "LI") {
       quoteNode.textContent = "";
-      App.hideElement(searchContainer, "search-results--show");      
+      App.hideElement(searchContainer, "search-results--show");
       App.animateText(e.target.childNodes[0].wholeText);
       authorNode.textContent = e.target.childNodes[2].wholeText;
     }
   });
 
-  document.addEventListener("click", e => {
+  document.addEventListener("click", (e) => {
     let target = e.target;
 
     do {
@@ -121,56 +128,49 @@ window.onload = function() {
         target.classList.contains("search__form")
       ) {
         return;
-      } else if (
-        target.classList &&
-        target.classList.contains("add-quote")
-      ) {
+      } else if (target.classList && target.classList.contains("add-quote")) {
         return;
-      }       
-      
+      }
+
       target = target.parentNode;
     } while (target);
 
     App.hideElement(searchContainer, "search-results--show");
     App.hideElement(addForm, "add-quote--show");
+    autocompleteList.innerHTML = "";
   });
 
   function postQuote(e) {
     e.preventDefault();
-  
+
     addFormLoader.textContent = "";
     App.hideElement(addFormLoader, "add-quote__loader--message");
-  
+
     App.showElement(addQuoteBtn, "add-quote__btn--loading");
-  
+
     const quote = {
       quote: quoteBodyInput.value,
       author: quoteAuthorInput.value,
-      genre: ""
+      genre: "",
     };
-  
-    if (
-      quote.author.length < 3 ||
-      quote.quote.length < 3
-    ) {
+
+    if (quote.author.length < 3 || quote.quote.length < 3) {
       App.showElement(addFormLoader, "add-quote__loader--message");
       addFormLoader.textContent =
         "Author and quote must have at least 3 characters";
       return;
     } else if (quote.quote.length > 400) {
       App.showElement(addFormLoader, "add-quote__loader--message");
-      addFormLoader.textContent =
-        "The quote is too long";
+      addFormLoader.textContent = "The quote is too long";
       return;
     }
 
-    App.API.getQuote(quote.quote).then(res => {
-      if(res.length) {
+    App.API.getQuote(quote.quote).then((res) => {
+      if (res.length) {
         App.showElement(addFormLoader, "add-quote__loader--message");
         addFormLoader.textContent = `We already have this quote. Check ${res[0].author}`;
       } else {
         App.API.postQuote(quote);
-        console.log("posted", quote);
         App.showElement(addFormLoader, "add-quote__loader--message");
         addFormLoader.textContent = "Quote added";
         quoteBodyInput.value = "";

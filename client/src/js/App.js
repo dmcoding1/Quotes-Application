@@ -19,8 +19,8 @@ class App {
     this.API = {
       getRandomQuote: () =>
         fetch(`http://${config.hostname}:3000/random`).then(res => res.json()),
-      getAuthorQuotes: author =>
-        fetch(`http://${config.hostname}:3000/quotes?author=${author}`).then(res =>
+      getAuthorQuotes: (author, options = {}) =>
+        fetch(`http://${config.hostname}:3000/quotes?author=${author}`, options).then(res =>
           res.json()
         ),
       getQuote: quote => fetch(`http://${config.hostname}:3000/quotes?quote=${quote}`).then(res => res.json()),

@@ -40,14 +40,25 @@
       </a>
       </div>
       <div class="search">
-        <form class="search__form" role="search">
-          <input
-            type="search"
-            class="search__input"
-            placeholder="Search author..."
-            aria-label="author name"
-            required
-          />
+        <form class="search__form" role="search">          
+          <div class="autocomplete">
+            <input
+              type="search"
+              class="search__input"
+              placeholder="Search author..."
+              aria-label="author name"
+              required
+            />
+            <ul class="autocomplete__items">
+              <li class="autocomplete__item"><button class="autocomplete__btn" tabindex="0">Einstein</button></li>
+              <li class="autocomplete__item"><button class="autocomplete__btn">Einstein</button></li>
+              <li class="autocomplete__item"><button class="autocomplete__btn">Einstein</button></li>
+              <li class="autocomplete__item"><button class="autocomplete__btn">Einstein</button></li>
+              
+            </ul>
+    
+
+          </div>
           <button
             type="submit"
             class="search__btn"
