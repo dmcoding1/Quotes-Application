@@ -1,5 +1,6 @@
 const Typed = require("typed.js");
 const config = require("../config.js");
+import { searchQuote } from "./DOM";
 
 class App {
   constructor(options = {}) {
@@ -13,6 +14,7 @@ class App {
     this.searchContainer = options.searchContainer;
     this.searchLoader = options.searchLoaderNode;
     this.showAddFormBtn = options.showAddFormBtn;
+    this.autocompleteList = searchQuote.autocompleteList;
     this.lastSearchInput = false;
     this.isTyping = false;
 
@@ -38,6 +40,7 @@ class App {
       }
     };
   }
+
 
   showRandomQuote() {
     if (this.isTyping) return;
@@ -145,8 +148,10 @@ class App {
         output.innerHTML = quoteList;
         this.showElement(this.searchContainer, "search-results--show");
         this.animateElement(this.searchContainer, "search-results--animate");
+        this.hideElement(this.autocompleteList, "autocomplete__items--show");
         this.hideElement(this.searchLoader, "search__loader--show");
         this.lastSearchInput = author;
+        this.autocompleteList.innerHTML = "";
       })
       .catch(err => {
         output.innerHTML = `<h4 class="search-results__header">Failed to fetch author. <br>Try again later.</h4>`;

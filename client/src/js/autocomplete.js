@@ -1,24 +1,27 @@
-const authorInput = document.querySelector(".search__input");
-const quotesList = document.querySelector(".search-results__list");
-const addForm = document.querySelector(".add-quote");
+import * as DOM from "./DOM";
 
+const { authorInput, quotesList, autocompleteList } = DOM.searchQuote;
+const { addForm } = DOM.addQuote;
 
-export default function handleAutocomplete(e, value, autocompleteList, App) {
+export default function handleAutocomplete(e, App) {
   const controller = new AbortController();
   const { signal } = controller;
 
-  setTimeout(() => controller.abort(), 2000);
+  setTimeout(() => controller.abort(), 1000);
+
+  const value = e.target.value;
+
+  let shouldDisplayList = false;
   
   if (value.length < 1) {
     autocompleteList.innerHTML = "";
     return;
   } else if (e.key === "ArrowDown" || e.key === "ArrowUp") {
     return;
-  } else {
-    autocompleteList.innerHTML = "";  
-
+  } else { 
     App.API.getAuthorQuotes(value, {signal})
       .then((quotes) => {
+        shouldDisplayList = true;
         let authors = quotes.map((quote) => quote.author);
 
         return [...new Set(authors)].map((author) => {
@@ -26,8 +29,9 @@ export default function handleAutocomplete(e, value, autocompleteList, App) {
         });
       })
       .then((authors) => {
-        autocompleteList.innerHTML = authors.join("");
+        if (shouldDisplayList) autocompleteList.innerHTML = authors.join("");
         App.showElement(autocompleteList, "autocomplete__items--show");
+        shouldDisplayList = false;
         return {};
       })
       .then((res) => {
@@ -55,19 +59,34 @@ export default function handleAutocomplete(e, value, autocompleteList, App) {
         });
 
         btns.forEach((btn) => {
+          btn.addEventListener("mouseup", (e) => {
+            e.preventDefault();            
+            handleSelect(e);
+          });
           btn.addEventListener("click", (e) => {
+            e.preventDefault();            
+            if (focusCounter === 0) return;
+            handleSelect(e);
+          });
+          btn.addEventListener("keyup", (e) => {
             e.preventDefault();
-            App.hideElement(addForm, "add-quote--show");
-            authorInput.value = e.target.textContent;
-            App.hideElement(autocompleteList, "autocomplete__items--show");
-            App.getAuthorQuotes(authorInput, quotesList);
-            autocompleteList.innerHTML = "";
+            if (e.key === "Tab") focusCounter++;  
+            if (e.key === "Tab" && e.shiftKey) focusCounter--;        
           });
         });
+
+        function handleSelect(e) {
+          authorInput.value = e.target.textContent;                        
+          App.hideElement(addForm, "add-quote--show");  
+          focusCounter = 0;          
+          App.getAuthorQuotes(authorInput, quotesList);
+        }
+
       })
       .catch((err) => {
         if(err.name === "AbortError") return;
         console.error(err);
       });
+
   }
 }

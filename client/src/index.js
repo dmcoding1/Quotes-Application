@@ -4,6 +4,7 @@ import "./styles/main.scss";
 import "./styles/animations.scss";
 import "./styles/viewports.scss";
 import QuoteApp from "./js/App";
+import * as DOM from "./js/DOM";
 import handleAutocomplete from "./js/autocomplete";
 import "./favicon.ico";
 
@@ -13,24 +14,33 @@ window.onload = function () {
   pageLoader.classList.add("loaded");
   setTimeout(() => (pageLoader.style.display = "none"), 1000);
 
-  const quoteNode = document.getElementById("quote");
-  const quoteLoaderNode = document.querySelector(".quote__loader");
-  const searchLoaderNode = document.querySelector(".search__loader");
-  const randomQuote = document.getElementById("random");
-  const authorNode = document.getElementById("author");
-  const searchContainer = document.querySelector(".search-results");
-  const searchForm = document.querySelector(".search__form");
-  const authorInput = document.querySelector(".search__input");
-  const quotesList = document.querySelector(".search-results__list");
-  const searchExitBtn = document.querySelector(".search-results__btn");
-  const showAddFormBtn = document.querySelector(".search-results__add-btn");
-  const addForm = document.querySelector(".add-quote");
-  const addFormExitBtn = document.querySelector(".add-quote__btn-exit");
-  const addFormLoader = document.querySelector(".add-quote__loader");
-  const quoteAuthorInput = document.getElementById("quote-author");
-  const quoteBodyInput = document.getElementById("quote-body");
-  const addQuoteBtn = document.querySelector(".add-quote__btn");
-  const autocompleteList = searchForm.querySelector(".autocomplete__items");
+  const {
+    quoteNode,
+    quoteLoaderNode,
+    searchLoaderNode,
+    randomQuote,
+    authorNode,
+  } = DOM.randomQuote;
+
+  const {
+    showAddFormBtn,
+    addForm,
+    addFormExitBtn,
+    addFormLoader,
+    quoteAuthorInput,
+    quoteBodyInput,
+    addQuoteBtn,
+  } = DOM.addQuote;
+
+  const {
+    searchContainer,
+    searchForm,
+    authorInput,
+    quotesList,
+    searchExitBtn,
+    autocompleteList,
+  } = DOM.searchQuote;
+
 
   const App = new QuoteApp({
     quoteNode,
@@ -49,11 +59,11 @@ window.onload = function () {
     e.preventDefault();
     App.hideElement(addForm, "add-quote--show");
     App.getAuthorQuotes(authorInput, quotesList);
+    autocompleteList.innerHTML = "";
   });
 
-  authorInput.addEventListener("keyup", (e) => {
-    const value = e.target.value;
-    handleAutocomplete(e, value, autocompleteList, App);
+  authorInput.addEventListener("input", (e) => {
+    handleAutocomplete(e, App);
   });
 
   searchExitBtn.addEventListener("click", () => {
@@ -68,7 +78,7 @@ window.onload = function () {
   showAddFormBtn.addEventListener("click", () => {
     addFormLoader.textContent = "";
     quoteBodyInput.value = "";
-    quoteAuthorInput.value = "";
+    quoteAuthorInput.value = authorInput.value;
     App.hideElement(searchContainer, "search-results--show");
     App.showElement(addForm, "add-quote--show");
     App.animateElement(addForm, "add-quote--animate");
