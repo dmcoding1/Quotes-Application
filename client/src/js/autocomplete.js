@@ -10,10 +10,8 @@ export default function handleAutocomplete(e, App) {
   setTimeout(() => controller.abort(), 1000);
 
   const value = e.target.value;
-
-  let shouldDisplayList = false;
   
-  if (value.length < 1) {
+  if (value.length < 3) {
     autocompleteList.innerHTML = "";
     return;
   } else if (e.key === "ArrowDown" || e.key === "ArrowUp") {
@@ -21,17 +19,15 @@ export default function handleAutocomplete(e, App) {
   } else { 
     App.API.getAuthorQuotes(value, {signal})
       .then((quotes) => {
-        shouldDisplayList = true;
-        let authors = quotes.map((quote) => quote.author);
+        const authors = quotes.map((quote) => quote.author);
 
         return [...new Set(authors)].map((author) => {
           return `<li class="autocomplete__item"><button class="autocomplete__btn">${author}</button></li>`;
         });
       })
       .then((authors) => {
-        if (shouldDisplayList) autocompleteList.innerHTML = authors.join("");
+        autocompleteList.innerHTML = authors.join("");
         App.showElement(autocompleteList, "autocomplete__items--show");
-        shouldDisplayList = false;
         return {};
       })
       .then((res) => {
@@ -44,10 +40,16 @@ export default function handleAutocomplete(e, App) {
         ];
 
         let focusCounter = 0;
+        
         document.addEventListener("keyup", (e) => {
-          if (e.key === "ArrowUp" && focusCounter > 0) {
-            focusCounter--;
-            btns[focusCounter - 1].focus();
+          if (e.key === "ArrowUp") {
+            if (focusCounter <= 1) {
+              focusCounter = 0;
+              authorInput.focus();
+            } else {
+              focusCounter--;
+              btns[focusCounter - 1].focus();
+            }            
           } else if (
             e.key === "ArrowDown" &&
             focusCounter < btns.length &&
@@ -65,7 +67,10 @@ export default function handleAutocomplete(e, App) {
           });
           btn.addEventListener("click", (e) => {
             e.preventDefault();            
-            if (focusCounter === 0) return;
+            if (focusCounter === 0) {
+              App.getAuthorQuotes(authorInput, quotesList);
+              return;
+            }
             handleSelect(e);
           });
           btn.addEventListener("keyup", (e) => {

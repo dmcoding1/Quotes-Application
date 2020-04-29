@@ -36,6 +36,7 @@ window.onload = function () {
     searchContainer,
     searchForm,
     authorInput,
+    searchBtn,
     quotesList,
     searchExitBtn,
     autocompleteList,
@@ -57,6 +58,9 @@ window.onload = function () {
 
   searchForm.addEventListener("submit", (e) => {
     e.preventDefault();
+  });
+
+  searchBtn.addEventListener("click", (e) => {
     App.hideElement(addForm, "add-quote--show");
     App.getAuthorQuotes(authorInput, quotesList);
     autocompleteList.innerHTML = "";

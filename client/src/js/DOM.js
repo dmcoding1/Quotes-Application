@@ -20,6 +20,7 @@ export const searchQuote = {
   searchContainer: document.querySelector(".search-results"),
   searchForm: document.querySelector(".search__form"),
   authorInput: document.querySelector(".search__input"),
+  searchBtn: document.querySelector(".search__btn"),
   quotesList: document.querySelector(".search-results__list"),
   searchExitBtn: document.querySelector(".search-results__btn"),
   autocompleteList: document.querySelector(".autocomplete__items"),

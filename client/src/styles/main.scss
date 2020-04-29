@@ -28,10 +28,22 @@ body {
     justify-content: center;
     align-items: center;
 
+    &__link {
+      text-align: center;
+      outline: none;
+
+      &:focus svg {
+        transform: scale(1.05);
+      }
+    }
+
     svg {
       width: 80%;
+      transition: transform .2s ease;
     }
   }
+
+  
 
   .search {
     height: 100%;
@@ -133,6 +145,7 @@ body {
     &__item {
       position: relative;
       z-index: 1; 
+      border-bottom: 3px solid #a93cdcAA;
     }
 
     &__btn {
