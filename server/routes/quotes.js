@@ -8,13 +8,15 @@ module.exports = app => {
     try {
       let { author, quote } = req.query;
       const names = author ? author.split(" ") : "";
-      let firstName = names[0] || "";
-      let lastName = names[1] || "";
+
+      const generateRegex = names => {
+        return names.map(name => name + ".*").join("");
+      }
 
       if (quote) quote = quote.replace(/\s+/g, ' ');
 
       const quotes = await Quote.find({
-        author: {"$regex": ".*" + firstName + " *" + lastName + ".*", "$options": "i"},
+        author: {"$regex": ".*" + generateRegex(names) + ".*", "$options": "i"},
         quote: {"$regex": ".*" + (quote ? quote : "") + ".*", "$options": "i"}
       });
       
