@@ -1,6 +1,7 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const WorkboxWebpackPlugin = require("workbox-webpack-plugin");
 
 module.exports = {
     entry: './client/src/index.js',
@@ -8,7 +9,7 @@ module.exports = {
         path: path.resolve(__dirname, 'client/dist'),
         filename: 'bundle.js'
     },
-    mode: "development",
+    mode: "production",
     module: {
         rules: [
             {
@@ -59,12 +60,26 @@ module.exports = {
     plugins: [
         new HtmlWebpackPlugin({
             template: './client/src/index.html',
-            favicon: './client/src/favicon.ico',
             filename: './index.html'
         }),
         new MiniCssExtractPlugin({
             filename: '[name].css',
             chunkFilename: '[id].css'
+        }),
+        new WorkboxWebpackPlugin.GenerateSW({
+            swDest: 'sw.js',
+            clientsClaim: true,
+            skipWaiting: true,
+            runtimeCaching: [{
+                urlPattern: new RegExp('^https:\/\/fonts\.googleapis\.com/'),
+                handler: 'StaleWhileRevalidate',
+                options: {
+                    cacheName: 'google-fonts',
+                    cacheableResponse: {
+                    statuses: [0, 200],
+                    },
+                },
+                }],
         })
     ]
 }

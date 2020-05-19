@@ -6,7 +6,6 @@ import "./styles/viewports.scss";
 import QuoteApp from "./js/App";
 import * as DOM from "./js/DOM";
 import handleAutocomplete from "./js/autocomplete";
-import "./favicon.ico";
 
 window.onload = function () {
   "use strict";
@@ -192,4 +191,17 @@ window.onload = function () {
       }
     });
   }
+
+  
+    
 };
+
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js').then(registration => {
+      console.log('SW registered: ', registration);
+    }).catch(registrationError => {
+      console.log('SW registration failed: ', registrationError);
+    });
+  });
+}
