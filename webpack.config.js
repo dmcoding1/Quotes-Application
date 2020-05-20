@@ -1,5 +1,6 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyWebpackPlugin = require("copy-webpack-plugin");
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const WorkboxWebpackPlugin = require("workbox-webpack-plugin");
 
@@ -58,6 +59,12 @@ module.exports = {
         ]
     },
     plugins: [
+        new CopyWebpackPlugin({
+            patterns: [
+                {from: "./client/src/images/", to: "images/"},
+                {from: "./client/src/manifest.json", to: "manifest.json"}
+            ]
+        }),
         new HtmlWebpackPlugin({
             template: './client/src/index.html',
             filename: './index.html'
@@ -69,17 +76,7 @@ module.exports = {
         new WorkboxWebpackPlugin.GenerateSW({
             swDest: 'sw.js',
             clientsClaim: true,
-            skipWaiting: true,
-            runtimeCaching: [{
-                urlPattern: new RegExp('^https:\/\/fonts\.googleapis\.com/'),
-                handler: 'StaleWhileRevalidate',
-                options: {
-                    cacheName: 'google-fonts',
-                    cacheableResponse: {
-                    statuses: [0, 200],
-                    },
-                },
-                }],
+            skipWaiting: true
         })
     ]
 }
