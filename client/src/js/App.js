@@ -178,6 +178,11 @@ class App {
     element.classList.add(className);
   }
 
+  displayCurrentYear(element) {
+    const currentYear = new Date().getFullYear();
+    element.textContent = currentYear;
+  }
+
 }
 
 export default App;

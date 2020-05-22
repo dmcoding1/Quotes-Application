@@ -1,3 +1,4 @@
+import "./styles/font.scss";
 import "./styles/reset.scss";
 import "./styles/loader.scss";
 import "./styles/main.scss";
@@ -11,7 +12,7 @@ window.onload = function () {
   "use strict";
   const pageLoader = document.getElementById("page-loader");
   pageLoader.classList.add("loaded");
-  setTimeout(() => (pageLoader.style.display = "none"), 1000);
+  setTimeout(() => (pageLoader.style.display = "none"), 800);
 
   const {
     quoteNode,
@@ -153,6 +154,8 @@ window.onload = function () {
     autocompleteList.innerHTML = "";
   });
 
+  App.displayCurrentYear(document.querySelector(".footer__date"));
+
   function postQuote(e) {
     e.preventDefault();
 
@@ -192,8 +195,6 @@ window.onload = function () {
     });
   }
 
-  
-    
 };
 
 if ('serviceWorker' in navigator) {
