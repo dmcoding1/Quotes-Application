@@ -2,7 +2,7 @@ const Typed = require("typed.js");
 
 import { searchQuote } from "./DOM";
 
-const URL = `http://51.178.42.${process.env.HOST_URL_PART}:${process.env.HOST_PORT}`;
+const URL = "http://51.178.42.224:5000";
 
 class App {
   constructor(options = {}) {
@@ -21,28 +21,27 @@ class App {
     this.isTyping = false;
 
     this.API = {
-      getRandomQuote: () =>
-        fetch(`${URL}/random`).then(res => res.json()),
+      getRandomQuote: () => fetch(`${URL}/random`).then((res) => res.json()),
       getAuthorQuotes: (author, options = {}) =>
-        fetch(`${URL}/quotes?author=${author}`, options).then(res =>
+        fetch(`${URL}/quotes?author=${author}`, options).then((res) =>
           res.json()
         ),
-      getQuote: quote => fetch(`${URL}/quotes?quote=${quote}`).then(res => res.json()),
-      postQuote: quoteObj => {
+      getQuote: (quote) =>
+        fetch(`${URL}/quotes?quote=${quote}`).then((res) => res.json()),
+      postQuote: (quoteObj) => {
         fetch(`${URL}/quotes/add`, {
           method: "POST",
           headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
           },
-          body: JSON.stringify(quoteObj)
+          body: JSON.stringify(quoteObj),
         })
-          .then(res => res.text())
-          .then(res => console.log(res))
-          .catch(err => console.log(err));
-      }
+          .then((res) => res.text())
+          .then((res) => console.log(res))
+          .catch((err) => console.log(err));
+      },
     };
   }
-
 
   showRandomQuote() {
     if (this.isTyping) return;
@@ -53,14 +52,15 @@ class App {
     this.showElement(this.loaderNode, "quote__loader--show");
 
     this.API.getRandomQuote()
-      .then(response => {
+      .then((response) => {
         this.hideElement(this.loaderNode, "quote__loader--show");
         this.animateText(response.quote);
         this.authorNode.textContent = `~ ${response.author}`;
       })
-      .catch(err => {
+      .catch((err) => {
         this.hideElement(this.loaderNode, "quote__loader--show");
-        this.quoteNode.textContent = "Cannot connect to the server. Check your internet connection and try again.";
+        this.quoteNode.textContent =
+          "Cannot connect to the server. Check your internet connection and try again.";
         console.error(err);
         this.isTyping = false;
       });
@@ -89,10 +89,10 @@ class App {
       backSpeed: 30,
       smartBackspace: true,
       backDelay: 80,
-      onComplete: self => {
+      onComplete: (self) => {
         self.cursor.remove();
         this.isTyping = false;
-      }
+      },
     });
   }
 
@@ -107,7 +107,7 @@ class App {
   }
 
   getAuthorQuotes(input, output) {
-    const author = input.value.trim().replace(/[^\w\s]/gi, '');
+    const author = input.value.trim().replace(/[^\w\s]/gi, "");
 
     this.showElement(this.searchLoader, "search__loader--show");
 
@@ -130,23 +130,29 @@ class App {
 
   getQuotesFromDb(input, output) {
     this.API.getAuthorQuotes(input)
-      .then(response => {
+      .then((response) => {
         let outputHTML = `<h4 class="search-results__header">Quotes by authors containing "${input}":</h4>`;
         if (response.length) {
           for (let quoteObj of response) {
             outputHTML += `<li class="search-results__item" title="Show on the big screen" role="button" tabindex="0" aria-label="show quote">${quoteObj.quote} <br>~ ${quoteObj.author}</li>`;
-            this.showElement(this.showAddFormBtn, "search-results__add-btn--show");
+            this.showElement(
+              this.showAddFormBtn,
+              "search-results__add-btn--show"
+            );
           }
         } else {
           outputHTML = `
             <h4 class="search-results__header">
               We're sorry. No quotes by this author.<br>Do you want to add one?
             </h4>`;
-          this.showElement(this.showAddFormBtn, "search-results__add-btn--show");
+          this.showElement(
+            this.showAddFormBtn,
+            "search-results__add-btn--show"
+          );
         }
         return outputHTML;
       })
-      .then(quoteList => {
+      .then((quoteList) => {
         output.innerHTML = quoteList;
         this.showElement(this.searchContainer, "search-results--show");
         this.animateElement(this.searchContainer, "search-results--animate");
@@ -155,7 +161,7 @@ class App {
         this.lastSearchInput = author;
         this.autocompleteList.innerHTML = "";
       })
-      .catch(err => {
+      .catch((err) => {
         output.innerHTML = `<h4 class="search-results__header">Failed to fetch author. <br>Try again later.</h4>`;
         this.showElement(this.searchContainer, "search-results--show");
         this.animateElement(this.searchContainer, "search-results--animate");
@@ -184,7 +190,6 @@ class App {
     const currentYear = new Date().getFullYear();
     element.textContent = currentYear;
   }
-
 }
 
 export default App;
