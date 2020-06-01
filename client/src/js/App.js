@@ -2,7 +2,7 @@ const Typed = require("typed.js");
 
 import { searchQuote } from "./DOM";
 
-const URL = "http://51.178.42.224:5000";
+const URL = "https://51.178.42.224:5000";
 
 class App {
   constructor(options = {}) {
