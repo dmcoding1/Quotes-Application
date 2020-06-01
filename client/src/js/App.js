@@ -1,6 +1,8 @@
 const Typed = require("typed.js");
-const config = require("../config.js");
+
 import { searchQuote } from "./DOM";
+
+const HOST = process.env.HOST_URL;
 
 class App {
   constructor(options = {}) {
@@ -20,14 +22,14 @@ class App {
 
     this.API = {
       getRandomQuote: () =>
-        fetch(`http://${config.hostname}:3000/random`).then(res => res.json()),
+        fetch(`${HOST}/random`).then(res => res.json()),
       getAuthorQuotes: (author, options = {}) =>
-        fetch(`http://${config.hostname}:3000/quotes?author=${author}`, options).then(res =>
+        fetch(`${HOST}/quotes?author=${author}`, options).then(res =>
           res.json()
         ),
-      getQuote: quote => fetch(`http://${config.hostname}:3000/quotes?quote=${quote}`).then(res => res.json()),
+      getQuote: quote => fetch(`${HOST}/quotes?quote=${quote}`).then(res => res.json()),
       postQuote: quoteObj => {
-        fetch(`http://${config.hostname}:3000/quotes/add`, {
+        fetch(`${HOST}/quotes/add`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json"

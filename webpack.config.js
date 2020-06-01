@@ -3,6 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const WorkboxWebpackPlugin = require("workbox-webpack-plugin");
+const Dotenv = require('dotenv-webpack');
 
 module.exports = {
     entry: './client/src/index.js',
@@ -78,6 +79,7 @@ module.exports = {
             swDest: 'sw.js',
             clientsClaim: true,
             skipWaiting: true
-        })
+        }),
+        new Dotenv()
     ]
 }
