@@ -30,10 +30,38 @@
       }
     }
 
-      .search-results {
-        width: 100%;
-      }
-    
+    .search-results {
+      width: 100%;
+    }
+
+    .add-quote__btn-exit {
+      font-size: 3.6rem;
+    }
+
+    .add-quote {
+      width: 75%;
+      height: 300%;
+      justify-content: space-between;
+    }
+
+    .add-quote {
+      label {
+        margin-bottom: 1rem;
+        font-size: 2.5rem;
+      }      
+    }
+
+    .add-quote__author,
+    .add-quote__quote {
+      margin-bottom: 2rem;
+      font-size: 2.6rem;
+    }
+
+    .add-quote__btn {
+      padding: 1rem 2rem;
+      width: 12rem;
+      font-size: 2.6rem;
+    }
   }
 
   .main {
@@ -77,6 +105,7 @@
   .logo {
     max-height: 40px;
   }
+
 }
 
 @media (max-height: 600px) {
@@ -89,6 +118,14 @@
       &__btn {
         max-height: 30px;
       }
+    }
+  }
+}
+
+@media (max-width: 359px) {
+  .header {
+    .add-quote {
+      height: 400%;
     }
   }
 }

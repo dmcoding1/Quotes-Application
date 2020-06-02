@@ -42,7 +42,6 @@ window.onload = function () {
     autocompleteList,
   } = DOM.searchQuote;
 
-
   const App = new QuoteApp({
     quoteNode,
     quoteLoaderNode,
@@ -181,28 +180,32 @@ window.onload = function () {
       return;
     }
 
-    App.API.getQuote(quote.quote).then((res) => {
-      if (res.length) {
-        App.showElement(addFormLoader, "add-quote__loader--message");
-        addFormLoader.textContent = `We already have this quote. Check ${res[0].author}`;
-      } else {
-        App.API.postQuote(quote);
-        App.showElement(addFormLoader, "add-quote__loader--message");
-        addFormLoader.textContent = "Quote added";
-        quoteBodyInput.value = "";
-        quoteAuthorInput.value = "";
-      }
-    });
+    App.API.getQuote(quote.quote)
+      .then((res) => {
+        if (res.length) {
+          App.showElement(addFormLoader, "add-quote__loader--message");
+          addFormLoader.textContent = `We already have this quote. Check ${res[0].author}`;
+        } else {
+          App.API.postQuote(quote);
+          App.showElement(addFormLoader, "add-quote__loader--message");
+          addFormLoader.textContent = "Quote added";
+          quoteBodyInput.value = "";
+          quoteAuthorInput.value = "";
+        }
+      })
+      .catch((err) => console.log(err));
   }
-
 };
 
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/sw.js').then(registration => {
-      console.log('SW registered: ', registration);
-    }).catch(registrationError => {
-      console.log('SW registration failed: ', registrationError);
-    });
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker
+      .register("/sw.js")
+      .then((registration) => {
+        console.log("SW registered: ", registration);
+      })
+      .catch((registrationError) => {
+        console.log("SW registration failed: ", registrationError);
+      });
   });
 }

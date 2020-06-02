@@ -2,7 +2,6 @@ const Typed = require("typed.js");
 
 import { searchQuote } from "./DOM";
 
-// const URL = "http://51.178.42.224:5000";
 const URL = process.env.HOST_URL;
 
 class App {
@@ -38,8 +37,7 @@ class App {
           body: JSON.stringify(quoteObj),
         })
           .then((res) => res.text())
-          .then((res) => console.log(res))
-          .catch((err) => console.log(err));
+          .catch((err) => console.error(err));
       },
     };
   }

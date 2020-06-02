@@ -8,8 +8,9 @@ module.exports = app => {
     try {
       let { author, quote } = req.query;
       const names = author ? author.split(" ") : "";
-
+      console.log(author, quote, names);
       const generateRegex = names => {
+        if (!names) return "";
         return names.map(name => name + ".*").join("");
       }
 
@@ -40,9 +41,7 @@ module.exports = app => {
     try {          
       await quoteObj.save();
       res.sendStatus(201);
-      res.send(quoteObj);
     } catch(err) {
-      res.sendStatus(500);
       console.error(err);
     }
   });
