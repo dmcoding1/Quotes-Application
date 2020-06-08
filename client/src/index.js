@@ -18,7 +18,7 @@ window.onload = function () {
     quoteNode,
     quoteLoaderNode,
     searchLoaderNode,
-    randomQuote,
+    randomQuoteBtn,
     authorNode,
   } = DOM.randomQuote;
 
@@ -53,7 +53,7 @@ window.onload = function () {
 
   App.showRandomQuote();
 
-  randomQuote.addEventListener("click", () => App.showRandomQuote());
+  randomQuoteBtn.addEventListener("click", () => App.showRandomQuote());
 
   searchForm.addEventListener("submit", (e) => {
     e.preventDefault();

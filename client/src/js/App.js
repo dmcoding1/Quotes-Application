@@ -1,6 +1,6 @@
 const Typed = require("typed.js");
 
-import { searchQuote } from "./DOM";
+import { randomQuote, searchQuote } from "./DOM";
 
 const URL = process.env.HOST_URL;
 
@@ -16,9 +16,9 @@ class App {
     this.searchContainer = options.searchContainer;
     this.searchLoader = options.searchLoaderNode;
     this.showAddFormBtn = options.showAddFormBtn;
+    this.randomQuoteBtn = randomQuote.randomQuoteBtn;
     this.autocompleteList = searchQuote.autocompleteList;
     this.lastSearchInput = false;
-    this.isTyping = false;
 
     this.API = {
       getRandomQuote: () => fetch(`${URL}/random`).then((res) => res.json()),
@@ -43,9 +43,7 @@ class App {
   }
 
   showRandomQuote() {
-    if (this.isTyping) return;
-
-    this.isTyping = true;
+    this.randomQuoteBtn.setAttribute("disabled", "true");
     this.quoteNode.textContent = "";
     this.authorNode.textContent = "";
     this.showElement(this.loaderNode, "quote__loader--show");
@@ -61,7 +59,7 @@ class App {
         this.quoteNode.textContent =
           "Cannot connect to the server. Check your internet connection and try again.";
         console.error(err);
-        this.isTyping = false;
+        this.randomQuoteBtn.removeAttribute("disabled");
       });
   }
 
@@ -90,7 +88,7 @@ class App {
       backDelay: 80,
       onComplete: (self) => {
         self.cursor.remove();
-        this.isTyping = false;
+        this.randomQuoteBtn.removeAttribute("disabled");
       },
     });
   }

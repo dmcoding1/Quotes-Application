@@ -2,7 +2,7 @@ export const randomQuote = {
   quoteNode: document.getElementById("quote"),
   quoteLoaderNode: document.querySelector(".quote__loader"),
   searchLoaderNode: document.querySelector(".search__loader"),
-  randomQuote: document.getElementById("random"),
+  randomQuoteBtn: document.getElementById("random"),
   authorNode: document.getElementById("author"),
 };
 
