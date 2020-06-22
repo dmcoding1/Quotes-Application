@@ -1,6 +1,6 @@
 module.exports.options = {
     "parserOptions": {
-        "ecmaVersion": 6,
+        "ecmaVersion": 7,
         "sourceType": "module",
     },
     "rules": {

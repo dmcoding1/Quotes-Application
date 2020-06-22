@@ -1,18 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <style>html{background-color: #181d1e;} html * {opacity: 0; visibility: hidden;}</style>
+    <style>
+      html {
+        background-color: #181d1e;
+      }
+      html * {
+        opacity: 0;
+        visibility: hidden;
+      }
+    </style>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Quotes App</title>
-    <meta name="description" content="App displays random quote from database, with search quote by author and add quote features.">
-    <link rel="manifest" href="manifest.json">
-    <link rel="apple-touch-icon" sizes="180x180" href="./images/icons/apple-touch-icon.png">
-    <link rel="icon" href="./images/icons/favicon.ico">
-    <link rel="mask-icon" href="./images/icons/safari-pinned-tab.svg" color="#5bbad5">
-    <meta name="msapplication-TileColor" content="#181d1e">
-    <meta name="theme-color" content="#a93cdc">
+    <meta
+      name="description"
+      content="App displays random quote from database, with search quote by author and add quote features."
+    />
+    <link rel="manifest" href="manifest.json" />
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="./images/icons/apple-touch-icon.png"
+    />
+    <link rel="icon" href="./images/icons/favicon.ico" />
+    <link
+      rel="mask-icon"
+      href="./images/icons/safari-pinned-tab.svg"
+      color="#5bbad5"
+    />
+    <meta name="msapplication-TileColor" content="#181d1e" />
+    <meta name="theme-color" content="#a93cdc" />
   </head>
   <body>
     <noscript>Enable JavaScript in your browser to run this page</noscript>
@@ -24,19 +43,19 @@
     <header class="header">
       <div class="logo">
         <a href="/" title="Home" class="logo__link">
-        <svg
-          width="152"
-          height="54"
-          viewBox="0 0 152 54"
-          fill="none"
-          xmlns:xlink="http://www.w3.org/1999/xlink"
-        >
-          <use xlink:href="#logo"></use>
-        </svg>
-      </a>
+          <svg
+            width="152"
+            height="54"
+            viewBox="0 0 152 54"
+            fill="none"
+            xmlns:xlink="http://www.w3.org/1999/xlink"
+          >
+            <use xlink:href="#logo"></use>
+          </svg>
+        </a>
       </div>
       <div class="search">
-        <form class="search__form" role="search">          
+        <form class="search__form" role="search" data-search-form>
           <div class="autocomplete">
             <input
               type="search"
@@ -44,32 +63,43 @@
               placeholder="Search author..."
               aria-label="author name"
               required
+              data-search-input
             />
-            <ul class="autocomplete__items"></ul>   
+            <ul class="autocomplete__items" data-autocomplete-list></ul>
           </div>
           <button
             type="submit"
             class="search__btn"
             role="button"
             aria-label="search"
+            data-search-btn
           >
-            <div class="search__loader">
-            </div>
+            <div class="search__loader" data-search-loader></div>
             <svg width="48" height="55" viewBox="0 0 48 55" fill="none">
-              <use xlink:href="#search-icon"></use>              
+              <use xlink:href="#search-icon"></use>
             </svg>
           </button>
         </form>
       </div>
-      <div class="search-results">
-        <button class="search-results__btn" aria-label="Hide search results">
+      <div class="search-results" data-search-results>
+        <button
+          class="search-results__btn"
+          aria-label="Hide search results"
+          data-search-exit
+        >
           x
         </button>
-        <ul class="search-results__list"></ul>
-        <button class="search-results__add-btn">Add quote</btn>
+        <ul class="search-results__list" data-search-list></ul>
+        <button class="search-results__add-btn" data-show-form>
+          Add quote
+        </button>
       </div>
-      <form class="add-quote">
-        <button class="add-quote__btn-exit" aria-label="Exit form">
+      <form class="add-quote" data-add-form>
+        <button
+          class="add-quote__btn-exit"
+          aria-label="Exit form"
+          data-form-exit
+        >
           x
         </button>
         <label for="quote-author">Author:</label>
@@ -89,15 +119,20 @@
           placeholder="Author's quote..."
           aria-label="Quote"
         ></textarea>
-        <button class="add-quote__btn" type="submit" aria-label="Submit quote">
+        <button
+          class="add-quote__btn"
+          type="submit"
+          aria-label="Submit quote"
+          data-form-btn
+        >
           <span>Submit</span>
-          <div class="add-quote__loader"></div>
+          <div class="add-quote__loader" data-form-loader></div>
         </button>
       </form>
     </header>
     <main class="main">
       <div class="quote">
-        <div class="quote__loader">
+        <div class="quote__loader" data-quote-loader>
           <div></div>
           <div></div>
           <div></div>
@@ -248,14 +283,20 @@
     </svg>
 
     <svg>
-      <symbol id="search-icon" width="48" height="55" viewBox="0 0 48 55" fill="none">
+      <symbol
+        id="search-icon"
+        width="48"
+        height="55"
+        viewBox="0 0 48 55"
+        fill="none"
+      >
         <path
-        fill-rule="evenodd"
-        clip-rule="evenodd"
-        d="M27.2566 33.2813C24.662 34.7869 21.6436 35.6495 18.4224 35.6495C8.73126 35.6495 0.875 27.8411 0.875 18.2089C0.875 8.57673 8.73126 0.768311 18.4224 0.768311C28.1136 0.768311 35.9699 8.57673 35.9699 18.2089C35.9699 23.2125 33.8499 27.7239 30.454 30.9043L47.875 51.8265L44.8026 54.3537L27.2566 33.2813ZM31.9818 18.2089C31.9818 25.6519 25.9111 31.6857 18.4224 31.6857C10.9338 31.6857 4.86305 25.6519 4.86305 18.2089C4.86305 10.7659 10.9338 4.73208 18.4224 4.73208C25.9111 4.73208 31.9818 10.7659 31.9818 18.2089Z"
-        fill="#FFEDAC"
-      />
-      </symbol>      
+          fill-rule="evenodd"
+          clip-rule="evenodd"
+          d="M27.2566 33.2813C24.662 34.7869 21.6436 35.6495 18.4224 35.6495C8.73126 35.6495 0.875 27.8411 0.875 18.2089C0.875 8.57673 8.73126 0.768311 18.4224 0.768311C28.1136 0.768311 35.9699 8.57673 35.9699 18.2089C35.9699 23.2125 33.8499 27.7239 30.454 30.9043L47.875 51.8265L44.8026 54.3537L27.2566 33.2813ZM31.9818 18.2089C31.9818 25.6519 25.9111 31.6857 18.4224 31.6857C10.9338 31.6857 4.86305 25.6519 4.86305 18.2089C4.86305 10.7659 10.9338 4.73208 18.4224 4.73208C25.9111 4.73208 31.9818 10.7659 31.9818 18.2089Z"
+          fill="#FFEDAC"
+        />
+      </symbol>
     </svg>
   </body>
 </html>

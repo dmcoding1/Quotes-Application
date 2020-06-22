@@ -5,7 +5,7 @@ const URL = process.env.HOST_URL;
 class App {
   constructor(UISelectors) {
     this.API = {
-      getAuthorQuotes: (author, options = {}) =>
+      getAuthorQuotes: (author, options = {}) => 
         fetch(`${URL}/quotes?author=${author}`, options).then((res) =>
           res.json()
         ),
@@ -57,7 +57,7 @@ class App {
       showAddFormBtn: document.querySelector(
         UISelectors.SHOW_ADD_FORM_BTN_QUERY
       ),
-    };  
+    };
 
     this.lastSearchInput = null;
   }
@@ -71,8 +71,8 @@ class App {
     });
     this.DOMNodes.searchBtn.addEventListener("click", (e) => {
       this.hideElement(this.DOMNodes.addForm, "add-quote--show");
-      this.getAuthorQuotes(this.DOMNodes.authorInput, this.DOMNodes.quotesList);
       this.DOMNodes.autocompleteList.innerHTML = "";
+      this.getAuthorQuotes(this.DOMNodes.authorInput, this.DOMNodes.quotesList);
     });
     this.DOMNodes.authorInput.addEventListener("input", (e) => {
       this.handleAutocomplete(e);
@@ -223,10 +223,24 @@ class App {
   getQuotesFromDb(input, output) {
     this.API.getAuthorQuotes(input)
       .then((response) => {
-        let outputHTML = `<h4 class="search-results__header">Quotes by authors containing "${input}":</h4>`;
+        let outputHTML = `
+          <h4 class="search-results__header">
+            Quotes by authors containing "${input}":
+          </h4>
+        `;
         if (response.length) {
           for (let quoteObj of response) {
-            outputHTML += `<li class="search-results__item" title="Show on the big screen" role="button" tabindex="0" aria-label="show quote">${quoteObj.quote} <br>~ ${quoteObj.author}</li>`;
+            outputHTML += `
+              <li 
+                class="search-results__item" 
+                title="Show on the big screen" 
+                role="button" 
+                tabindex="0" 
+                aria-label="show quote"
+              > 
+                ${quoteObj.quote} <br>~ ${quoteObj.author}
+              </li>
+            `;
             this.showElement(
               this.DOMNodes.showAddFormBtn,
               "search-results__add-btn--show"
@@ -254,7 +268,11 @@ class App {
         this.DOMNodes.autocompleteList.innerHTML = "";
       })
       .catch((err) => {
-        output.innerHTML = `<h4 class="search-results__header">Failed to fetch author. <br>Try again later.</h4>`;
+        output.innerHTML = `
+          <h4 class="search-results__header">
+            Failed to fetch author. <br>Try again later.
+          </h4>
+        `;
         this.showSearchResults();
         console.error(err);
       });
@@ -279,7 +297,12 @@ class App {
           const authors = quotes.map((quote) => quote.author);
 
           return [...new Set(authors)].map((author) => {
-            return `<li class="autocomplete__item"><button class="autocomplete__btn">${author}</button></li>`;
+            return `
+              <li class="autocomplete__item">
+                <button class="autocomplete__btn" data-autocomplete-btn>
+                  ${author}
+                </button>
+              </li>`;
           });
         })
         .then((authors) => {
@@ -295,8 +318,8 @@ class App {
             this.DOMNodes.autocompleteList.innerHTML = "";
             return;
           }
-          
-          this.handleSelectionFromAutocomplete();          
+
+          this.handleSelectionFromAutocomplete();
         })
         .catch((err) => {
           if (err.name === "AbortError") return;
@@ -307,21 +330,18 @@ class App {
 
   handleSelectionFromAutocomplete() {
     const btns = [
-      ...this.DOMNodes.autocompleteList.getElementsByClassName(
-        "autocomplete__btn"
+      ...this.DOMNodes.autocompleteList.querySelectorAll(
+        "[data-autocomplete-btn]"
       ),
-    ];          
+    ];
 
     let focusCounter = 0;
 
     const handleSelect = (e) => {
-      this.DOMNodes.authorInput.value = e.target.textContent;
+      this.DOMNodes.authorInput.value = e.target.textContent.trim();
       this.hideElement(this.DOMNodes.addForm, "add-quote--show");
       focusCounter = 0;
-      this.getAuthorQuotes(
-        this.DOMNodes.authorInput,
-        this.DOMNodes.quotesList
-      );
+      this.getAuthorQuotes(this.DOMNodes.authorInput, this.DOMNodes.quotesList);
     };
 
     document.addEventListener("keyup", (e) => {
@@ -390,7 +410,7 @@ class App {
       genre: "",
     };
 
-    const { quote, author, genre} = requestBody;
+    const { quote, author, genre } = requestBody;
 
     if (author.length < 3 || quote.length < 3) {
       this.showElement(
@@ -433,7 +453,7 @@ class App {
 
   showElement(element, className) {
     element.classList.add(className);
-  }  
+  }
 
   showRandomQuote() {
     this.DOMNodes.randomQuoteBtn.setAttribute("disabled", "true");
@@ -483,7 +503,7 @@ class App {
       "search-results--animate"
     );
     this.hideElement(this.DOMNodes.searchLoader, "search__loader--show");
-  }  
+  }
 }
 
 export default App;

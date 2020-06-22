@@ -1,5 +1,5 @@
-import App from "./js/App";
-import selectors from "./js/DOM";
+import App from "./App";
+import selectors from "./DOM";
 
 export default function init() {
   const pageLoader = document.getElementById("page-loader");
